@@ -103,6 +103,34 @@ section{padding:90px 0}
 .local{font-size:.87rem;color:var(--suave);margin-bottom:16px}
 .specs{display:flex;gap:16px;flex-wrap:wrap;font-size:.83rem;color:var(--medio);
   font-weight:700;border-top:1px solid var(--linha);padding-top:15px;margin-top:auto}
+.ver-mais{margin-top:16px;align-self:flex-start;background:none;border:1.5px solid var(--linha);
+  color:var(--patri);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:100px;
+  cursor:pointer;font-family:inherit;transition:.18s}
+.ver-mais:hover{background:var(--patri);border-color:var(--patri);color:#fff}
+
+/* ---------- Modal empreendimento ---------- */
+.proj-modal{position:fixed;inset:0;z-index:100;display:none}
+.proj-modal.is-on{display:block}
+.proj-modal-overlay{position:absolute;inset:0;background:rgba(15,26,38,.72)}
+.proj-modal-box{position:relative;max-width:760px;width:92%;margin:5vh auto;max-height:90vh;
+  overflow-y:auto;background:#fff;border-radius:var(--r);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.proj-modal-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:100%;
+  background:rgba(255,255,255,.92);border:none;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;z-index:2;transition:.18s}
+.proj-modal-close:hover{background:#fff;transform:scale(1.06)}
+.proj-modal-close svg{width:18px;height:18px}
+.proj-modal-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--neve)}
+.proj-modal-body{padding:32px}
+.proj-modal-body h3{font-size:1.5rem;margin-bottom:14px;color:var(--noite)}
+.proj-modal-texto{color:var(--suave);font-size:.98rem;line-height:1.7;margin-bottom:24px}
+.proj-modal-mapa{width:100%;aspect-ratio:16/9;border:none;border-radius:10px;display:block;
+  margin-bottom:24px}
+.proj-modal-acoes{display:flex;gap:12px;flex-wrap:wrap}
+body.modal-aberto{overflow:hidden}
+@media(max-width:640px){
+  .proj-modal-box{margin:0;width:100%;max-height:100vh;border-radius:0}
+  .proj-modal-body{padding:24px}
+}
 
 /* ---------- MVV ---------- */
 .mvv{background:var(--noite);color:#fff}
@@ -256,7 +284,10 @@ footer a:hover{color:var(--turq)}
 
   <div class="grade">
 
-    <article class="card" data-s="disp" id="lavire-iii">
+    <article class="card" data-s="disp" id="lavire-iii" data-modal
+      data-foto="img/banner-lavire3.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="Nosso próximo lançamento em Cidade Ocidental/GO, em fase de pré-lançamento. Condomínio fechado, com vendas abrindo em breve — cadastre-se para ser avisado em primeira mão assim que o empreendimento for liberado para comercialização.">
       <div class="capa"><img src="img/lavire-iii.jpg" alt="Fachada do Lavire III Residencial" loading="lazy">
         <span class="status s-disp">Em breve</span></div>
       <div class="txt">
@@ -265,10 +296,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">Nosso próximo lançamento. Vendas abrem em breve
           &mdash; cadastre-se para ser avisado em primeira mão.</p>
         <div class="specs"><span>Pré-lançamento</span><span>Condomínio fechado</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="disp" id="lavire-iv">
+    <article class="card" data-s="disp" id="lavire-iv" data-modal
+      data-foto="img/banner-lavire4.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio fechado em Cidade Ocidental/GO com 8 apartamentos prontos para morar, de 2 a 3 quartos e vaga de garagem. Ideal para quem quer mudar sem esperar prazo de obra.">
       <div class="capa"><img src="img/lavire-iv.jpg" alt="Fachada do Lavire IV Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
@@ -277,10 +312,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">Apartamentos prontos para morar, com dois ou três
           quartos e condomínio fechado.</p>
         <div class="specs"><span>8 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="disp" id="lavire-vi">
+    <article class="card" data-s="disp" id="lavire-vi" data-modal
+      data-foto="img/banner-lavire6.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio fechado em Cidade Ocidental/GO, a menos de 400 metros da escola pública, do posto de saúde e do comércio local. 8 apartamentos disponíveis, de 2 a 3 quartos, com vaga de garagem.">
       <div class="capa"><img src="img/lavire-vi.jpg" alt="Fachada do Lavire VI Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
@@ -289,10 +328,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">A menos de 400 metros da escola pública, do posto
           de saúde e do comércio local.</p>
         <div class="specs"><span>8 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="disp" id="alto-araras">
+    <article class="card" data-s="disp" id="alto-araras" data-modal
+      data-foto="img/banner-altoararas.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="O maior empreendimento da Patrimonial até hoje: 24 apartamentos em condomínio fechado, de 2 a 3 quartos, com vaga de garagem, em Cidade Ocidental/GO.">
       <div class="capa"><img src="img/alto-araras.jpg" alt="Fachada do Alto das Araras Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
@@ -301,10 +344,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">O maior empreendimento da Patrimonial, com dois ou
           três quartos e condomínio fechado.</p>
         <div class="specs"><span>24 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="entr">
+    <article class="card" data-s="entr" id="nelson-teixeira" data-modal
+      data-foto="img/nelson-teixeira.jpg"
+      data-mapa="https://www.google.com/maps?q=Parque+Araguari,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="Nossa primeira obra habitacional, entregue no Parque Araguari, Qd. 29B Lt. 09, em Cidade Ocidental/GO. Seis unidades de 339,51 m², já entregues às famílias — o começo da trajetória da Patrimonial na construção civil.">
       <div class="capa"><img src="img/nelson-teixeira.jpg" alt="Fachada do Residencial Nelson R. Teixeira" loading="lazy">
         <span class="status s-entregue">Entregue</span></div>
       <div class="txt">
@@ -313,10 +360,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">Nossa primeira obra habitacional. Seis unidades
           entregues &mdash; o começo de tudo o que viria depois.</p>
         <div class="specs"><span>6 unidades</span><span>339,51 m²</span><span>Entregue</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="vend" id="lavire-ii">
+    <article class="card" data-s="vend" id="lavire-ii" data-modal
+      data-foto="img/banner-lavire2.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio entregue em Cidade Ocidental/GO, com 8 apartamentos completos e planejados. Todas as unidades já foram comercializadas.">
       <div class="capa"><img src="img/lavire-ii.jpg" alt="Fachada do Lavire II Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
@@ -325,10 +376,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">Apartamentos completos e planejados, entregues às
           famílias que confiaram na Patrimonial. Todas as unidades comercializadas.</p>
         <div class="specs"><span>8 apartamentos</span><span>100% vendido</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="vend" id="lavire-i">
+    <article class="card" data-s="vend" id="lavire-i" data-modal
+      data-foto="img/banner-lavire1.jpg"
+      data-mapa="https://www.google.com/maps?q=Recreio+Mossoró,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="72 casas entregues no Recreio Mossoró, em Cidade Ocidental/GO, em condomínio fechado com guarita 24 horas. Unidades de 50,57 m², com todas as unidades comercializadas.">
       <div class="capa"><img src="img/lavire-i.jpg" alt="Casas do Lavire I Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
@@ -337,10 +392,14 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">72 casas entregues em condomínio fechado, com
           guarita 24 horas. Todas as unidades comercializadas.</p>
         <div class="specs"><span>72 casas</span><span>50,57 m²</span><span>100% vendido</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
-    <article class="card" data-s="vend" id="lavire-v">
+    <article class="card" data-s="vend" id="lavire-v" data-modal
+      data-foto="img/banner-lavire5.jpg"
+      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio entregue em Cidade Ocidental/GO, com 8 apartamentos de 3 quartos — o único empreendimento com essa metragem na região. Todas as unidades já foram comercializadas.">
       <div class="capa"><img src="img/lavire-v.jpg" alt="Fachada do Lavire V Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
@@ -349,6 +408,7 @@ footer a:hover{color:var(--turq)}
         <p class="sub" style="font-size:.94rem">Único empreendimento com três quartos da região.
           Todas as unidades comercializadas.</p>
         <div class="specs"><span>8 apartamentos</span><span>3 quartos</span><span>100% vendido</span></div>
+        <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
@@ -473,6 +533,24 @@ footer a:hover{color:var(--turq)}
 
 <a class="zap" href="https://wa.me/5561982880326" target="_blank" rel="noopener">Falar no WhatsApp</a>
 
+<div class="proj-modal" id="proj-modal" aria-hidden="true">
+  <div class="proj-modal-overlay" data-fechar></div>
+  <div class="proj-modal-box" role="dialog" aria-modal="true" aria-labelledby="proj-modal-titulo">
+    <button class="proj-modal-close" type="button" data-fechar aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1C3752" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+    <img class="proj-modal-img" id="proj-modal-img" src="" alt="">
+    <div class="proj-modal-body">
+      <h3 id="proj-modal-titulo"></h3>
+      <p class="proj-modal-texto" id="proj-modal-texto"></p>
+      <iframe class="proj-modal-mapa" id="proj-modal-mapa" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="proj-modal-acoes">
+        <a class="btn btn-z" id="proj-modal-zap" href="https://wa.me/5561982880326" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 document.querySelectorAll('.aba').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.aba').forEach(x=>x.setAttribute('aria-selected','false'));
@@ -498,6 +576,50 @@ document.getElementById('video-historia').addEventListener('click', function(){
   }
   pts.forEach(p=>p.addEventListener('click',()=>ir(parseInt(p.dataset.i))));
   setInterval(()=>ir(i+1), 6000);
+})();
+
+(function(){
+  const modal = document.getElementById('proj-modal');
+  const img = document.getElementById('proj-modal-img');
+  const titulo = document.getElementById('proj-modal-titulo');
+  const texto = document.getElementById('proj-modal-texto');
+  const mapa = document.getElementById('proj-modal-mapa');
+  const zap = document.getElementById('proj-modal-zap');
+  let ultimoFoco = null;
+
+  function abrir(card){
+    const nome = card.querySelector('h3') ? card.querySelector('h3').textContent : '';
+    img.src = card.dataset.foto || '';
+    img.alt = 'Foto de ' + nome;
+    titulo.textContent = nome;
+    texto.textContent = card.dataset.texto || '';
+    mapa.src = card.dataset.mapa || '';
+    zap.href = 'https://wa.me/5561982880326?text=' + encodeURIComponent('Olá! Tenho interesse no ' + nome + '.');
+    modal.classList.add('is-on');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-aberto');
+    ultimoFoco = document.activeElement;
+    modal.querySelector('.proj-modal-close').focus();
+  }
+
+  function fechar(){
+    modal.classList.remove('is-on');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-aberto');
+    mapa.src = '';
+    if (ultimoFoco) ultimoFoco.focus();
+  }
+
+  document.querySelectorAll('.card[data-modal]').forEach(card=>{
+    const btn = card.querySelector('.ver-mais');
+    if (btn) btn.addEventListener('click', ()=>abrir(card));
+  });
+
+  modal.querySelectorAll('[data-fechar]').forEach(el=>el.addEventListener('click', fechar));
+
+  document.addEventListener('keydown', e=>{
+    if (e.key === 'Escape' && modal.classList.contains('is-on')) fechar();
+  });
 })();
 </script>
 </body>
