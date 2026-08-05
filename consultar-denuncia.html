@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consultar Denúncia | Patrimonial Construtora e Incorporadora</title>
+<meta name="description" content="Consulte o andamento de uma denúncia registrada no Canal de Denúncias da Patrimonial.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1C3752">
+<style>
+:root{
+  --noite:#1C3752; --patri:#204E72; --medio:#2F7795; --turq:#54BEC2;
+  --neve:#F4F6F8; --linha:#E2E8EC; --suave:#5B7183; --max:620px; --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--noite);
+  line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--medio)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+header{background:var(--noite);padding:22px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+header a.voltar{color:#fff;font-size:.9rem;font-weight:700}
+main{padding:56px 0 90px}
+h1{font-size:clamp(1.6rem,3.2vw,2.15rem);margin-bottom:10px;letter-spacing:-.01em}
+.lead{color:var(--suave);font-size:1rem;margin-bottom:28px;max-width:56ch}
+.campo label{display:block;font-size:.88rem;font-weight:700;color:var(--noite);margin-bottom:6px}
+input[type=text]{width:100%;padding:13px 14px;border:1.5px solid var(--linha);border-radius:9px;
+  font-size:1rem;font-family:monospace;color:var(--noite)}
+input[type=text]:focus{outline:none;border-color:var(--medio)}
+.btn-consultar{margin-top:14px;display:inline-flex;align-items:center;gap:9px;padding:15px 30px;
+  border-radius:100px;font-weight:700;font-size:.98rem;background:var(--patri);color:#fff;
+  border:0;cursor:pointer;transition:.18s}
+.btn-consultar:hover{background:var(--noite)}
+.btn-consultar:disabled{opacity:.6;cursor:default}
+.resultado{margin-top:28px;border-radius:var(--r);padding:20px 22px;font-size:.98rem;display:none}
+.resultado.ok{background:#EAF7EF;border:1px solid #C4E8D1;color:#1E6B3C;display:block}
+.resultado.erro{background:#FDEAEA;border:1px solid #F3C6C6;color:#8A2323;display:block}
+.resultado a{color:#204E72;font-weight:700}
+.resultado .rotulo{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  opacity:.75;margin-bottom:8px}
+footer{background:var(--noite);color:#A9C0D0;font-size:.85rem;padding:26px 0;text-align:center}
+footer a{color:#fff}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <strong style="color:#fff">Patrimonial</strong>
+  <a class="voltar" href="index.html">&larr; Voltar ao site</a>
+</div></header>
+
+<main class="wrap">
+  <h1>Consultar Denúncia</h1>
+  <p class="lead">Informe o número de protocolo recebido no momento do registro para acompanhar
+    o andamento da sua denúncia.</p>
+
+  <form id="form-consulta" autocomplete="off">
+    <div class="campo">
+      <label for="protocolo">Número de protocolo</label>
+      <input type="text" id="protocolo" name="protocolo" placeholder="PROTOCOLO-XXXXXXXXXXXXX" required>
+    </div>
+    <button type="submit" class="btn-consultar" id="btn-consultar">Consultar</button>
+  </form>
+
+  <div class="resultado" id="resultado"></div>
+</main>
+
+<footer>Patrimonial Serviços Especializados LTDA &middot; CNPJ 16.530.021/0001-59</footer>
+
+<script>
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbznM-Ka7ndZqE4Xw1-3jVPMvjE3HEV5cgwiQDnggoSh1YwydQM5spkeOigSa3B4Njf_/exec';
+
+var form = document.getElementById('form-consulta');
+var btn = document.getElementById('btn-consultar');
+var resultado = document.getElementById('resultado');
+
+form.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var protocolo = document.getElementById('protocolo').value.trim();
+  resultado.className = 'resultado';
+  resultado.style.display = 'none';
+  if (!protocolo) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Consultando...';
+
+  fetch(WEBAPP_URL + '?protocolo=' + encodeURIComponent(protocolo))
+    .then(function(r){ return r.json(); })
+    .then(function(json){
+      btn.disabled = false;
+      btn.textContent = 'Consultar';
+      if (json && json.erro) {
+        resultado.className = 'resultado erro';
+        resultado.textContent = json.erro;
+      } else if (json && json.status) {
+        resultado.className = 'resultado ok';
+        resultado.innerHTML = '<div class="rotulo">Status da denúncia ' + protocolo + '</div>' + json.status;
+      } else {
+        resultado.className = 'resultado ok';
+        resultado.innerHTML = '<div class="rotulo">Status da denúncia ' + protocolo + '</div>' +
+          'Denúncia recebida e ainda não tratada pela equipe de compliance.';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = 'Consultar';
+      resultado.className = 'resultado erro';
+      resultado.textContent = 'Não foi possível consultar agora. Verifique sua conexão e tente novamente.';
+    });
+});
+</script>
+
+</body>
+</html>

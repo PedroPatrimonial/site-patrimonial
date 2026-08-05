@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canal de Denúncias | Patrimonial Construtora e Incorporadora</title>
+<meta name="description" content="Canal de Denúncias da Patrimonial Construtora e Incorporadora. Registre relatos de forma identificada ou anônima.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1C3752">
+<style>
+:root{
+  --noite:#1C3752; --patri:#204E72; --medio:#2F7795; --turq:#54BEC2;
+  --neve:#F4F6F8; --linha:#E2E8EC; --suave:#5B7183; --max:760px; --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--noite);
+  background:var(--branco);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--medio)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+header{background:var(--noite);padding:22px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+header a.voltar{color:#fff;font-size:.9rem;font-weight:700}
+main{padding:48px 0 90px}
+h1{font-size:clamp(1.6rem,3.2vw,2.15rem);margin-bottom:10px;letter-spacing:-.01em}
+.lead{color:var(--suave);font-size:1rem;margin-bottom:8px;max-width:60ch}
+.aviso{background:var(--neve);border:1px solid var(--linha);border-radius:var(--r);
+  padding:16px 18px;font-size:.92rem;color:#33465A;margin:22px 0 8px}
+.aviso b{color:var(--patri)}
+fieldset{border:0;margin:30px 0 0}
+legend{font-weight:700;font-size:1.02rem;color:var(--patri);margin-bottom:14px;padding:0}
+.campo{margin-bottom:18px}
+.campo label{display:block;font-size:.88rem;font-weight:700;color:var(--noite);margin-bottom:6px}
+.campo .opcional{font-weight:400;color:var(--suave);font-size:.82rem}
+input[type=text],input[type=email],input[type=number],select,textarea{
+  width:100%;padding:12px 14px;border:1.5px solid var(--linha);border-radius:9px;
+  font-size:.96rem;font-family:inherit;color:var(--noite);background:#fff;transition:.15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--medio)}
+textarea{min-height:110px;resize:vertical}
+.radiogrupo{display:flex;gap:14px;flex-wrap:wrap}
+.radiogrupo label{display:flex;align-items:center;gap:8px;font-weight:400;font-size:.95rem;
+  border:1.5px solid var(--linha);border-radius:9px;padding:11px 16px;cursor:pointer;flex:1;min-width:200px}
+.radiogrupo input{width:auto;margin:0}
+.radiogrupo label:has(input:checked){border-color:var(--medio);background:var(--neve)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.oculto{display:none}
+.btn-enviar{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:100px;
+  font-weight:700;font-size:.98rem;background:var(--patri);color:#fff;border:0;cursor:pointer;transition:.18s}
+.btn-enviar:hover{background:var(--noite)}
+.btn-enviar:disabled{opacity:.6;cursor:default}
+.msg{border-radius:var(--r);padding:18px 20px;margin-top:22px;font-size:.95rem;display:none}
+.msg.erro{background:#FDEAEA;color:#8A2323;border:1px solid #F3C6C6;display:block}
+.msg.sucesso{background:#EAF7EF;color:#1E6B3C;border:1px solid #C4E8D1;display:block}
+.protocolo-box{background:#fff;border:1.5px dashed var(--medio);border-radius:9px;
+  padding:14px 16px;margin-top:12px;font-family:monospace;font-size:1.05rem;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--noite)}
+.protocolo-box button{background:var(--medio);color:#fff;border:0;border-radius:7px;
+  padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer}
+footer{background:var(--noite);color:#A9C0D0;font-size:.85rem;padding:26px 0;text-align:center}
+footer a{color:#fff}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <strong style="color:#fff">Patrimonial</strong>
+  <a class="voltar" href="index.html">&larr; Voltar ao site</a>
+</div></header>
+
+<main class="wrap">
+  <h1>Canal de Denúncias</h1>
+  <p class="lead">Espaço para relatar condutas em desacordo com nossos valores &mdash; assédio, fraude,
+    descumprimento de políticas internas, irregularidades em obras ou qualquer situação que
+    mereça atenção da Patrimonial.</p>
+
+  <div class="aviso">
+    <b>Você pode denunciar de forma anônima.</b> Não preencher nome e e-mail não impede o
+    registro. Após o envio, você receberá um <b>número de protocolo</b> &mdash; guarde-o para
+    acompanhar o andamento em <a href="consultar-denuncia.html">Consultar denúncia</a>, já que
+    sem ele não será possível localizar seu relato.
+  </div>
+
+  <form id="form-denuncia" autocomplete="off">
+
+    <fieldset>
+      <legend>1. Identificação</legend>
+      <div class="campo">
+        <label>Como deseja registrar?</label>
+        <div class="radiogrupo">
+          <label><input type="radio" name="tipo_denuncia" value="anonimo" checked> Anônima</label>
+          <label><input type="radio" name="tipo_denuncia" value="identificado"> Identificada</label>
+        </div>
+      </div>
+      <div id="bloco-identificado" class="oculto">
+        <div class="grid2">
+          <div class="campo">
+            <label>Nome</label>
+            <input type="text" name="nome" id="campo-nome">
+          </div>
+          <div class="campo">
+            <label>E-mail</label>
+            <input type="email" name="email" id="campo-email">
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. Sobre o relato</legend>
+      <div class="grid2">
+        <div class="campo">
+          <label>Classificação</label>
+          <select name="classificacao" required>
+            <option value="" disabled selected>Selecione</option>
+            <option value="assedio">Assédio moral ou sexual</option>
+            <option value="conduta_inadequada">Conduta inadequada</option>
+            <option value="descumprimento_politicas">Descumprimento de políticas internas</option>
+            <option value="fraude_corrupcao">Fraude ou corrupção</option>
+            <option value="financeiro">Questão financeira</option>
+            <option value="seguranca_trabalho">Segurança do trabalho</option>
+            <option value="outros">Outros</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label>Grau de certeza sobre os fatos</label>
+          <select name="sobre_fatos" required>
+            <option value="" disabled selected>Selecione</option>
+            <option value="certeza">Tenho certeza do que presenciei</option>
+            <option value="indícios">Há indícios, mas não tenho certeza total</option>
+            <option value="boato">Ouvi comentários (boato)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="campo">
+          <label>Empreendimento / Local <span class="opcional">(se souber)</span></label>
+          <select name="condominio_select" id="condominio_select">
+            <option value="" disabled selected>Selecione</option>
+            <option value="matriz">Matriz / Sede administrativa</option>
+            <option value="lavire_i">Lavire I</option>
+            <option value="lavire_ii">Lavire II</option>
+            <option value="lavire_iii">Lavire III</option>
+            <option value="lavire_iv">Lavire IV</option>
+            <option value="lavire_v">Lavire V</option>
+            <option value="lavire_vi">Lavire VI</option>
+            <option value="alto_das_araras">Alto das Araras</option>
+            <option value="nao_sei">Não sei / não se aplica</option>
+            <option value="outro">Outro (especificar)</option>
+          </select>
+          <input type="text" id="condominio_outro" class="oculto" placeholder="Qual local?" style="margin-top:8px">
+          <input type="hidden" name="condominio" id="condominio_final">
+        </div>
+        <div class="campo">
+          <label>Local detalhado <span class="opcional">(opcional)</span></label>
+          <input type="text" name="local_detalhado" placeholder="Ex.: obra, setor, endereço">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Descrição dos fatos</label>
+        <textarea name="descricao_fatos" required placeholder="Descreva o que aconteceu com o máximo de detalhes possível: quando, onde, quem estava envolvido e o que foi observado."></textarea>
+      </div>
+
+      <div class="campo">
+        <label>Sugestão <span class="opcional">(opcional)</span></label>
+        <textarea name="sugestao" placeholder="Alguma sugestão para tratar ou evitar o problema?"></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3. Pessoas envolvidas <span class="opcional" style="font-weight:400">(se souber)</span></legend>
+      <div class="grid2">
+        <div class="campo">
+          <label>Nome do envolvido <span class="opcional">(opcional)</span></label>
+          <input type="text" name="nome_envolvido">
+        </div>
+        <div class="campo">
+          <label>Cargo do envolvido <span class="opcional">(opcional)</span></label>
+          <input type="text" name="cargo_envolvido">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Participação do envolvido <span class="opcional">(opcional)</span></label>
+        <input type="text" name="participacao_envolvido" placeholder="Qual foi o papel dessa pessoa nos fatos relatados?">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>4. Informações complementares <span class="opcional" style="font-weight:400">(opcional)</span></legend>
+      <div class="grid2">
+        <div class="campo">
+          <label>Quantidade de ocorrências</label>
+          <input type="text" name="quantidade_ocorrencias" placeholder="Ex.: única vez, recorrente">
+        </div>
+        <div class="campo">
+          <label>Valor financeiro envolvido</label>
+          <input type="text" name="valor_financeiro" placeholder="Se houver">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Protocolo anterior</label>
+        <input type="text" name="protocolo_anterior" placeholder="Se este relato está relacionado a uma denúncia já registrada">
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn-enviar" id="btn-enviar">Enviar denúncia</button>
+
+    <div class="msg" id="msg-erro"></div>
+    <div class="msg" id="msg-sucesso"></div>
+  </form>
+</main>
+
+<footer>Patrimonial Serviços Especializados LTDA &middot; CNPJ 16.530.021/0001-59</footer>
+
+<script>
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbznM-Ka7ndZqE4Xw1-3jVPMvjE3HEV5cgwiQDnggoSh1YwydQM5spkeOigSa3B4Njf_/exec';
+
+var radios = document.querySelectorAll('input[name=tipo_denuncia]');
+var blocoId = document.getElementById('bloco-identificado');
+radios.forEach(function(r){
+  r.addEventListener('change', function(){
+    blocoId.classList.toggle('oculto', r.value !== 'identificado' || !r.checked);
+  });
+});
+
+var condSel = document.getElementById('condominio_select');
+var condOutro = document.getElementById('condominio_outro');
+var condFinal = document.getElementById('condominio_final');
+condSel.addEventListener('change', function(){
+  if (condSel.value === 'outro') {
+    condOutro.classList.remove('oculto');
+    condFinal.value = '';
+  } else {
+    condOutro.classList.add('oculto');
+    condFinal.value = condSel.value;
+  }
+});
+condOutro.addEventListener('input', function(){
+  condFinal.value = condOutro.value;
+});
+
+var form = document.getElementById('form-denuncia');
+var btn = document.getElementById('btn-enviar');
+var msgErro = document.getElementById('msg-erro');
+var msgSucesso = document.getElementById('msg-sucesso');
+
+form.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  msgErro.style.display = 'none';
+  msgErro.className = 'msg';
+  msgSucesso.style.display = 'none';
+  msgSucesso.className = 'msg';
+
+  if (condSel.value === '' ) {
+    condFinal.value = '';
+  }
+
+  var dados = new URLSearchParams(new FormData(form));
+  dados.delete('condominio_select');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  fetch(WEBAPP_URL, { method: 'POST', body: dados })
+    .then(function(r){ return r.json(); })
+    .then(function(json){
+      btn.disabled = false;
+      btn.textContent = 'Enviar denúncia';
+      if (json && json.protocolo) {
+        form.style.display = 'none';
+        msgSucesso.className = 'msg sucesso';
+        msgSucesso.innerHTML = '<strong>Denúncia registrada com sucesso.</strong><br>' +
+          'Guarde o número de protocolo abaixo para consultar o andamento a qualquer momento.' +
+          '<div class="protocolo-box"><span id="protocolo-texto">' + json.protocolo + '</span>' +
+          '<button type="button" id="btn-copiar">Copiar</button></div>';
+        document.getElementById('btn-copiar').addEventListener('click', function(){
+          navigator.clipboard.writeText(json.protocolo);
+          this.textContent = 'Copiado!';
+        });
+      } else {
+        msgErro.className = 'msg erro';
+        msgErro.textContent = 'Não foi possível registrar sua denúncia agora. Tente novamente em instantes ou envie um e-mail para contato@patrimonialse.com.br.';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = 'Enviar denúncia';
+      msgErro.className = 'msg erro';
+      msgErro.textContent = 'Não foi possível registrar sua denúncia agora. Verifique sua conexão e tente novamente.';
+    });
+});
+</script>
+
+</body>
+</html>
