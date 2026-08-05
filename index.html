@@ -285,10 +285,10 @@ footer a:hover{color:var(--turq)}
   <div class="grade">
 
     <article class="card" data-s="disp" id="lavire-iii" data-modal
-      data-foto="img/lavire-iii.jpg"
+      data-foto="img/lavire-iii.jpg?v=2"
       data-mapa="https://www.google.com/maps?q=Lote+30,+Quadra+37,+Parque+Nápolis+Gleba+A,+Cidade+Ocidental,+GO&output=embed"
       data-texto="Nosso próximo lançamento no Parque Nápolis Gleba A (Lote 30, Quadra 37), em Cidade Ocidental/GO, em fase de pré-lançamento. 18 apartamentos de 3 quartos, em condomínio fechado — cadastre-se para ser avisado em primeira mão assim que o empreendimento for liberado para comercialização.">
-      <div class="capa"><img src="img/lavire-iii.jpg" alt="Fachada do Lavire III Residencial" loading="lazy">
+      <div class="capa"><img src="img/lavire-iii.jpg?v=2" alt="Fachada do Lavire III Residencial" loading="lazy">
         <span class="status s-disp">Em breve</span></div>
       <div class="txt">
         <h3>Lavire III</h3>
@@ -301,10 +301,10 @@ footer a:hover{color:var(--turq)}
     </article>
 
     <article class="card" data-s="disp" id="lavire-iv" data-modal
-      data-foto="img/lavire-iv.jpg"
+      data-foto="img/lavire-iv.jpg?v=2"
       data-mapa="https://www.google.com/maps?q=Quadra+3,+Lote+11,+Parque+Nápoles+A,+Cidade+Ocidental,+GO&output=embed"
       data-texto="Condomínio fechado no Parque Nápoles A (Quadra 3, Lote 11), em Cidade Ocidental/GO, com 8 apartamentos prontos para morar — 5 de 2 quartos e 3 de 3 quartos — e vaga de garagem. Ideal para quem quer mudar sem esperar prazo de obra.">
-      <div class="capa"><img src="img/lavire-iv.jpg" alt="Fachada do Lavire IV Residencial" loading="lazy">
+      <div class="capa"><img src="img/lavire-iv.jpg?v=2" alt="Fachada do Lavire IV Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
         <h3>Lavire IV</h3>
@@ -335,14 +335,14 @@ footer a:hover{color:var(--turq)}
     <article class="card" data-s="disp" id="alto-araras" data-modal
       data-foto="img/alto-araras.jpg"
       data-mapa="https://www.google.com/maps?q=Quadra+52,+Lote+11,+Parque+Nova+Friburgo,+Cidade+Ocidental,+GO&output=embed"
-      data-texto="O maior empreendimento da Patrimonial até hoje, no Parque Nova Friburgo (Quadra 52, Lote 11), em Cidade Ocidental/GO: 24 apartamentos em condomínio fechado — 15 de 2 quartos e 9 de 3 quartos — com vaga de garagem.">
+      data-texto="No Parque Nova Friburgo (Quadra 52, Lote 11), em Cidade Ocidental/GO: 24 apartamentos em condomínio fechado — 15 de 2 quartos e 9 de 3 quartos — com vaga de garagem.">
       <div class="capa"><img src="img/alto-araras.jpg" alt="Fachada do Alto das Araras Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
         <h3>Alto das Araras</h3>
         <p class="local">Parque Nova Friburgo &middot; Cidade Ocidental / GO</p>
-        <p class="sub" style="font-size:.94rem">O maior empreendimento da Patrimonial, com dois ou
-          três quartos e condomínio fechado.</p>
+        <p class="sub" style="font-size:.94rem">24 apartamentos em condomínio fechado, com dois
+          ou três quartos e vaga de garagem.</p>
         <div class="specs"><span>24 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
         <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
@@ -357,8 +357,8 @@ footer a:hover{color:var(--turq)}
       <div class="txt">
         <h3>Residencial Nelson R. Teixeira</h3>
         <p class="local">Parque Araguari, Qd. 29B Lt. 09 &middot; Cidade Ocidental / GO</p>
-        <p class="sub" style="font-size:.94rem">Nossa primeira obra habitacional. Seis unidades
-          entregues &mdash; o começo de tudo o que viria depois.</p>
+        <p class="sub" style="font-size:.94rem">Seis unidades residenciais de 339,51 m² cada,
+          no Parque Araguari, Qd. 29B Lt. 09.</p>
         <div class="specs"><span>6 unidades</span><span>339,51 m²</span><span>Entregue</span></div>
         <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
@@ -474,7 +474,7 @@ footer a:hover{color:var(--turq)}
         <span>Asa Sul &middot; Brasília / DF</span></div></div>
     </div>
   </div>
-  <form onsubmit="event.preventDefault();alert('Protótipo — o envio será ligado na publicação.')">
+  <form id="form-contato" onsubmit="return false">
     <label for="n">Nome</label><input id="n" required>
     <label for="t">Telefone / WhatsApp</label><input id="t" type="tel" required>
     <label for="e">E-mail</label><input id="e" type="email" required>
@@ -546,6 +546,7 @@ footer a:hover{color:var(--turq)}
       <iframe class="proj-modal-mapa" id="proj-modal-mapa" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       <div class="proj-modal-acoes">
         <a class="btn btn-z" id="proj-modal-zap" href="https://wa.me/556130530827" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn btn-g" id="proj-modal-como-chegar" href="" target="_blank" rel="noopener">Como chegar</a>
       </div>
     </div>
   </div>
@@ -560,6 +561,22 @@ document.querySelectorAll('.aba').forEach(b=>b.addEventListener('click',()=>{
     c.style.display = (f==='todos'||c.dataset.s===f) ? '' : 'none';
   });
 }));
+
+document.getElementById('form-contato').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var nome = document.getElementById('n').value.trim();
+  var tel = document.getElementById('t').value.trim();
+  var email = document.getElementById('e').value.trim();
+  var interesse = document.getElementById('i').value;
+  var msg = document.getElementById('m').value.trim();
+  var texto = 'Olá! Vim pelo site da Patrimonial.\n' +
+    'Nome: ' + nome + '\n' +
+    'Telefone: ' + tel + '\n' +
+    'E-mail: ' + email + '\n' +
+    'Interesse: ' + interesse +
+    (msg ? '\nMensagem: ' + msg : '');
+  window.open('https://wa.me/556130530827?text=' + encodeURIComponent(texto), '_blank');
+});
 
 document.getElementById('video-historia').addEventListener('click', function(){
   this.innerHTML = '<iframe src="https://www.youtube.com/embed/5HBJSYaUSCA?autoplay=1" title="PATRIMONIAL - O sonho tem que continuar" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
@@ -585,6 +602,7 @@ document.getElementById('video-historia').addEventListener('click', function(){
   const texto = document.getElementById('proj-modal-texto');
   const mapa = document.getElementById('proj-modal-mapa');
   const zap = document.getElementById('proj-modal-zap');
+  const comoChegar = document.getElementById('proj-modal-como-chegar');
   let ultimoFoco = null;
 
   function abrir(card){
@@ -594,6 +612,8 @@ document.getElementById('video-historia').addEventListener('click', function(){
     titulo.textContent = nome;
     texto.textContent = card.dataset.texto || '';
     mapa.src = card.dataset.mapa || '';
+    comoChegar.href = (card.dataset.mapa || '').replace('&output=embed', '');
+    comoChegar.textContent = 'Como chegar no ' + nome;
     zap.href = 'https://wa.me/556130530827?text=' + encodeURIComponent('Olá! Tenho interesse no ' + nome + '.');
     modal.classList.add('is-on');
     modal.setAttribute('aria-hidden', 'false');
