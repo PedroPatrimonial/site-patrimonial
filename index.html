@@ -92,7 +92,7 @@ section{padding:90px 0}
   transition:.2s;display:flex;flex-direction:column}
 .card:hover{box-shadow:0 18px 40px rgba(28,55,82,.13);transform:translateY(-3px)}
 .card .capa{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--neve)}
-.card .capa img{width:100%;height:100%;object-fit:cover}
+.card .capa img{width:100%;height:100%;object-fit:contain;background:var(--neve);padding:8px}
 .status{position:absolute;top:14px;left:14px;font-size:.68rem;font-weight:700;
   letter-spacing:.13em;text-transform:uppercase;padding:7px 13px;border-radius:100px;color:#fff}
 .s-disp{background:#1B9E5A}
@@ -119,7 +119,7 @@ section{padding:90px 0}
   justify-content:center;z-index:2;transition:.18s}
 .proj-modal-close:hover{background:#fff;transform:scale(1.06)}
 .proj-modal-close svg{width:18px;height:18px}
-.proj-modal-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--neve)}
+.proj-modal-img{width:100%;aspect-ratio:16/9;object-fit:contain;display:block;background:var(--neve)}
 .proj-modal-body{padding:32px}
 .proj-modal-body h3{font-size:1.5rem;margin-bottom:14px;color:var(--noite)}
 .proj-modal-texto{color:var(--suave);font-size:.98rem;line-height:1.7;margin-bottom:24px}
@@ -286,29 +286,29 @@ footer a:hover{color:var(--turq)}
 
     <article class="card" data-s="disp" id="lavire-iii" data-modal
       data-foto="img/lavire-iii.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="Nosso próximo lançamento em Cidade Ocidental/GO, em fase de pré-lançamento. Condomínio fechado, com vendas abrindo em breve — cadastre-se para ser avisado em primeira mão assim que o empreendimento for liberado para comercialização.">
+      data-mapa="https://www.google.com/maps?q=Lote+30,+Quadra+37,+Parque+Nápolis+Gleba+A,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="Nosso próximo lançamento no Parque Nápolis Gleba A (Lote 30, Quadra 37), em Cidade Ocidental/GO, em fase de pré-lançamento. 18 apartamentos de 3 quartos, em condomínio fechado — cadastre-se para ser avisado em primeira mão assim que o empreendimento for liberado para comercialização.">
       <div class="capa"><img src="img/lavire-iii.jpg" alt="Fachada do Lavire III Residencial" loading="lazy">
         <span class="status s-disp">Em breve</span></div>
       <div class="txt">
         <h3>Lavire III</h3>
-        <p class="local">Cidade Ocidental / GO</p>
-        <p class="sub" style="font-size:.94rem">Nosso próximo lançamento. Vendas abrem em breve
+        <p class="local">Parque Nápolis Gleba A &middot; Cidade Ocidental / GO</p>
+        <p class="sub" style="font-size:.94rem">Nosso próximo lançamento. 18 apartamentos de 3 quartos
           &mdash; cadastre-se para ser avisado em primeira mão.</p>
-        <div class="specs"><span>Pré-lançamento</span><span>Condomínio fechado</span></div>
+        <div class="specs"><span>18 apartamentos</span><span>3 quartos</span><span>Pré-lançamento</span></div>
         <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
     <article class="card" data-s="disp" id="lavire-iv" data-modal
       data-foto="img/lavire-iv.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="Condomínio fechado em Cidade Ocidental/GO com 8 apartamentos prontos para morar, de 2 a 3 quartos e vaga de garagem. Ideal para quem quer mudar sem esperar prazo de obra.">
+      data-mapa="https://www.google.com/maps?q=Quadra+3,+Lote+11,+Parque+Nápoles+A,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio fechado no Parque Nápoles A (Quadra 3, Lote 11), em Cidade Ocidental/GO, com 8 apartamentos prontos para morar — 5 de 2 quartos e 3 de 3 quartos — e vaga de garagem. Ideal para quem quer mudar sem esperar prazo de obra.">
       <div class="capa"><img src="img/lavire-iv.jpg" alt="Fachada do Lavire IV Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
         <h3>Lavire IV</h3>
-        <p class="local">Cidade Ocidental / GO</p>
+        <p class="local">Parque Nápoles A &middot; Cidade Ocidental / GO</p>
         <p class="sub" style="font-size:.94rem">Apartamentos prontos para morar, com dois ou três
           quartos e condomínio fechado.</p>
         <div class="specs"><span>8 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
@@ -318,13 +318,13 @@ footer a:hover{color:var(--turq)}
 
     <article class="card" data-s="disp" id="lavire-vi" data-modal
       data-foto="img/lavire-vi.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="Condomínio fechado em Cidade Ocidental/GO, a menos de 400 metros da escola pública, do posto de saúde e do comércio local. 8 apartamentos disponíveis, de 2 a 3 quartos, com vaga de garagem.">
+      data-mapa="https://www.google.com/maps?q=Quadra+57,+Lote+07,+Parque+Nápoles+B,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio fechado no Parque Nápoles B (Quadra 57, Lote 07), em Cidade Ocidental/GO, a menos de 400 metros da escola pública, do posto de saúde e do comércio local. 8 apartamentos disponíveis — 5 de 2 quartos e 3 de 3 quartos — com vaga de garagem.">
       <div class="capa"><img src="img/lavire-vi.jpg" alt="Fachada do Lavire VI Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
         <h3>Lavire VI</h3>
-        <p class="local">Cidade Ocidental / GO</p>
+        <p class="local">Parque Nápoles B &middot; Cidade Ocidental / GO</p>
         <p class="sub" style="font-size:.94rem">A menos de 400 metros da escola pública, do posto
           de saúde e do comércio local.</p>
         <div class="specs"><span>8 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
@@ -334,13 +334,13 @@ footer a:hover{color:var(--turq)}
 
     <article class="card" data-s="disp" id="alto-araras" data-modal
       data-foto="img/alto-araras.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="O maior empreendimento da Patrimonial até hoje: 24 apartamentos em condomínio fechado, de 2 a 3 quartos, com vaga de garagem, em Cidade Ocidental/GO.">
+      data-mapa="https://www.google.com/maps?q=Quadra+52,+Lote+11,+Parque+Nova+Friburgo,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="O maior empreendimento da Patrimonial até hoje, no Parque Nova Friburgo (Quadra 52, Lote 11), em Cidade Ocidental/GO: 24 apartamentos em condomínio fechado — 15 de 2 quartos e 9 de 3 quartos — com vaga de garagem.">
       <div class="capa"><img src="img/alto-araras.jpg" alt="Fachada do Alto das Araras Residencial" loading="lazy">
         <span class="status s-disp">Disponível</span></div>
       <div class="txt">
         <h3>Alto das Araras</h3>
-        <p class="local">Cidade Ocidental / GO</p>
+        <p class="local">Parque Nova Friburgo &middot; Cidade Ocidental / GO</p>
         <p class="sub" style="font-size:.94rem">O maior empreendimento da Patrimonial, com dois ou
           três quartos e condomínio fechado.</p>
         <div class="specs"><span>24 apartamentos</span><span>2 a 3 quartos</span><span>Garagem</span></div>
@@ -366,24 +366,24 @@ footer a:hover{color:var(--turq)}
 
     <article class="card" data-s="vend" id="lavire-ii" data-modal
       data-foto="img/lavire-ii.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="Condomínio entregue em Cidade Ocidental/GO, com 8 apartamentos completos e planejados. Todas as unidades já foram comercializadas.">
+      data-mapa="https://www.google.com/maps?q=-16.113203048706055,-47.94772720336914&output=embed"
+      data-texto="Condomínio entregue no Parque Nápolis A (Rua 17, Quadra 45, Lote 10), em Cidade Ocidental/GO, com 8 apartamentos de 2 quartos, completos e planejados. Todas as unidades já foram comercializadas.">
       <div class="capa"><img src="img/lavire-ii.jpg" alt="Fachada do Lavire II Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
         <h3>Lavire II</h3>
-        <p class="local">Cidade Ocidental / GO</p>
-        <p class="sub" style="font-size:.94rem">Apartamentos completos e planejados, entregues às
-          famílias que confiaram na Patrimonial. Todas as unidades comercializadas.</p>
-        <div class="specs"><span>8 apartamentos</span><span>100% vendido</span></div>
+        <p class="local">Parque Nápolis A &middot; Cidade Ocidental / GO</p>
+        <p class="sub" style="font-size:.94rem">Apartamentos de 2 quartos, completos e planejados,
+          entregues às famílias que confiaram na Patrimonial.</p>
+        <div class="specs"><span>8 apartamentos</span><span>2 quartos</span><span>100% vendido</span></div>
         <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
     <article class="card" data-s="vend" id="lavire-i" data-modal
       data-foto="img/lavire-i.jpg"
-      data-mapa="https://www.google.com/maps?q=Recreio+Mossoró,+Cidade+Ocidental,+GO&output=embed"
-      data-texto="72 casas entregues no Recreio Mossoró, em Cidade Ocidental/GO, em condomínio fechado com guarita 24 horas. Unidades de 50,57 m², com todas as unidades comercializadas.">
+      data-mapa="https://www.google.com/maps?q=Rua+Rui+Barbosa,+Quadra+03,+Lote+07,+Recreio+Mossoró,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="72 casas entregues na Rua Rui Barbosa, Quadra 03, Lote 07, no Recreio Mossoró, em Cidade Ocidental/GO, em condomínio fechado com guarita 24 horas. Unidades de 2 quartos e 50,57 m², com todas as unidades comercializadas.">
       <div class="capa"><img src="img/lavire-i.jpg" alt="Casas do Lavire I Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
@@ -391,20 +391,20 @@ footer a:hover{color:var(--turq)}
         <p class="local">Recreio Mossoró &middot; Cidade Ocidental / GO</p>
         <p class="sub" style="font-size:.94rem">72 casas entregues em condomínio fechado, com
           guarita 24 horas. Todas as unidades comercializadas.</p>
-        <div class="specs"><span>72 casas</span><span>50,57 m²</span><span>100% vendido</span></div>
+        <div class="specs"><span>72 casas</span><span>2 quartos</span><span>100% vendido</span></div>
         <button class="ver-mais" type="button">Ver detalhes</button>
       </div>
     </article>
 
     <article class="card" data-s="vend" id="lavire-v" data-modal
       data-foto="img/lavire-v.jpg"
-      data-mapa="https://www.google.com/maps?q=Cidade+Ocidental,+GO&output=embed"
-      data-texto="Condomínio entregue em Cidade Ocidental/GO, com 8 apartamentos de 3 quartos — o único empreendimento com essa metragem na região. Todas as unidades já foram comercializadas.">
+      data-mapa="https://www.google.com/maps?q=Lote+06,+Quadra+04,+Ocidental+Park,+Cidade+Ocidental,+GO&output=embed"
+      data-texto="Condomínio entregue no Ocidental Park (Lote 06, Quadra 04), em Cidade Ocidental/GO, com 8 apartamentos de 3 quartos — o único empreendimento com essa metragem na região. Todas as unidades já foram comercializadas.">
       <div class="capa"><img src="img/lavire-v.jpg" alt="Fachada do Lavire V Residencial" loading="lazy">
         <span class="status s-vend">100% vendido</span></div>
       <div class="txt">
         <h3>Lavire V</h3>
-        <p class="local">Cidade Ocidental / GO</p>
+        <p class="local">Ocidental Park &middot; Cidade Ocidental / GO</p>
         <p class="sub" style="font-size:.94rem">Único empreendimento com três quartos da região.
           Todas as unidades comercializadas.</p>
         <div class="specs"><span>8 apartamentos</span><span>3 quartos</span><span>100% vendido</span></div>
@@ -464,8 +464,8 @@ footer a:hover{color:var(--turq)}
     <p class="sub">Nosso time responde em horário comercial. Se preferir, chame direto
       no WhatsApp &mdash; costuma ser mais rápido.</p>
     <div class="canais">
-      <div class="canal"><div><b>WhatsApp comercial</b>
-        <span>Atendimento de segunda a sexta, 8h às 18h</span></div></div>
+      <div class="canal"><a href="https://wa.me/556130530827" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><div><b>WhatsApp comercial</b>
+        <span>Atendimento de segunda a sexta, 8h às 18h</span></div></a></div>
       <div class="canal"><div><b>(61) 3053-0827</b>
         <span>Central de atendimento</span></div></div>
       <div class="canal"><div><b>contato@patrimonialse.com.br</b>
@@ -517,7 +517,7 @@ footer a:hover{color:var(--turq)}
       <li><a href="#">Canal de Denúncias</a></li>
       <li><a href="#">Consultar denúncia</a></li>
       <li><a href="privacidade.html">Política de Privacidade</a></li>
-      <li><a href="#">Trabalhe conosco</a></li>
+      <li><a href="#contato">Trabalhe conosco</a></li>
     </ul></div>
     <div><h4>Contato</h4><ul>
       <li><a href="tel:+556130530827">(61) 3053-0827</a></li>
@@ -531,7 +531,7 @@ footer a:hover{color:var(--turq)}
   </div>
 </div></footer>
 
-<a class="zap" href="https://wa.me/5561982880326" target="_blank" rel="noopener">Falar no WhatsApp</a>
+<a class="zap" href="https://wa.me/556130530827" target="_blank" rel="noopener">Falar no WhatsApp</a>
 
 <div class="proj-modal" id="proj-modal" aria-hidden="true">
   <div class="proj-modal-overlay" data-fechar></div>
@@ -545,7 +545,7 @@ footer a:hover{color:var(--turq)}
       <p class="proj-modal-texto" id="proj-modal-texto"></p>
       <iframe class="proj-modal-mapa" id="proj-modal-mapa" src="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       <div class="proj-modal-acoes">
-        <a class="btn btn-z" id="proj-modal-zap" href="https://wa.me/5561982880326" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn btn-z" id="proj-modal-zap" href="https://wa.me/556130530827" target="_blank" rel="noopener">Falar no WhatsApp</a>
       </div>
     </div>
   </div>
@@ -594,7 +594,7 @@ document.getElementById('video-historia').addEventListener('click', function(){
     titulo.textContent = nome;
     texto.textContent = card.dataset.texto || '';
     mapa.src = card.dataset.mapa || '';
-    zap.href = 'https://wa.me/5561982880326?text=' + encodeURIComponent('Olá! Tenho interesse no ' + nome + '.');
+    zap.href = 'https://wa.me/556130530827?text=' + encodeURIComponent('Olá! Tenho interesse no ' + nome + '.');
     modal.classList.add('is-on');
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-aberto');
