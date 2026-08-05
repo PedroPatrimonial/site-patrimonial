@@ -78,7 +78,7 @@ form.addEventListener('submit', function(ev){
   ev.preventDefault();
   var protocolo = document.getElementById('protocolo').value.trim();
   resultado.className = 'resultado';
-  resultado.style.display = 'none';
+  resultado.removeAttribute('style');
   if (!protocolo) return;
 
   btn.disabled = true;
@@ -104,6 +104,7 @@ form.addEventListener('submit', function(ev){
     .catch(function(){
       btn.disabled = false;
       btn.textContent = 'Consultar';
+      resultado.removeAttribute('style');
       resultado.className = 'resultado erro';
       resultado.textContent = 'Não foi possível consultar agora. Verifique sua conexão e tente novamente.';
     });

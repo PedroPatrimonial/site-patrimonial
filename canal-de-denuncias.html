@@ -247,9 +247,9 @@ var msgSucesso = document.getElementById('msg-sucesso');
 
 form.addEventListener('submit', function(ev){
   ev.preventDefault();
-  msgErro.style.display = 'none';
+  msgErro.removeAttribute('style');
   msgErro.className = 'msg';
-  msgSucesso.style.display = 'none';
+  msgSucesso.removeAttribute('style');
   msgSucesso.className = 'msg';
 
   if (condSel.value === '' ) {
