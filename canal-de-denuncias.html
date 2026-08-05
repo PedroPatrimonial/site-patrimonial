@@ -269,6 +269,7 @@ form.addEventListener('submit', function(ev){
       btn.textContent = 'Enviar denúncia';
       if (json && json.protocolo) {
         form.style.display = 'none';
+        msgSucesso.removeAttribute('style');
         msgSucesso.className = 'msg sucesso';
         msgSucesso.innerHTML = '<strong>Denúncia registrada com sucesso.</strong><br>' +
           'Guarde o número de protocolo abaixo para consultar o andamento a qualquer momento.' +
