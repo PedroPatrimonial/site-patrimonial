@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Controle da Qualidade | Patrimonial</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1C3752">
+<style>
+:root{--noite:#1C3752;--patri:#204E72;--medio:#2F7795;--turq:#54BEC2;
+ --neve:#F4F6F8;--linha:#E2E8EC;--suave:#5B7183;--erro:#8A2323;--ok:#1E6B3C;--max:640px;--r:12px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--noite);background:#fff;line-height:1.55}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 18px}
+header{background:var(--noite);padding:16px 0;position:sticky;top:0;z-index:10}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+header strong{color:#fff;font-size:1rem}
+header .quem{color:#A9C0D0;font-size:.78rem;text-align:right;line-height:1.3}
+header button{background:none;border:0;color:#A9C0D0;font-size:.78rem;text-decoration:underline;cursor:pointer;padding:0}
+main{padding:26px 0 70px}
+h1{font-size:1.45rem;margin-bottom:8px;letter-spacing:-.01em}
+h2{font-size:1.05rem;color:var(--patri);margin:26px 0 10px}
+.lead{color:var(--suave);font-size:.94rem;margin-bottom:20px}
+.campo{margin-bottom:15px}
+label{display:block;font-size:.85rem;font-weight:700;margin-bottom:5px}
+label .opc{font-weight:400;color:var(--suave);font-size:.8rem}
+input,select,textarea{width:100%;padding:13px 14px;border:1.5px solid var(--linha);border-radius:10px;
+ font-size:1rem;font-family:inherit;color:var(--noite);background:#fff;appearance:none}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--medio)}
+select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235B7183'><path d='M7 10l5 5 5-5z'/></svg>");
+ background-repeat:no-repeat;background-position:right 10px center;background-size:22px;padding-right:38px}
+textarea{min-height:88px;resize:vertical}
+.dupla{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:block;width:100%;padding:16px;border:0;border-radius:100px;background:var(--patri);
+ color:#fff;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px}
+.btn:disabled{opacity:.55}
+.btn.sec{background:#fff;color:var(--patri);border:1.5px solid var(--linha)}
+.menu{display:grid;gap:12px;margin-top:6px}
+.item{display:flex;align-items:center;gap:14px;border:1.5px solid var(--linha);border-radius:var(--r);
+ padding:16px;background:#fff;cursor:pointer;text-align:left;width:100%;font-family:inherit}
+.item:active{background:var(--neve)}
+.item .n{flex:none;width:34px;height:34px;border-radius:9px;background:var(--neve);color:var(--patri);
+ display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem}
+.item .t{font-weight:700;font-size:.98rem;color:var(--noite)}
+.item .d{font-size:.82rem;color:var(--suave)}
+.item[disabled]{opacity:.45;cursor:default}
+.msg{border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:.92rem;display:none}
+.msg.erro{background:#FDEAEA;color:var(--erro);border:1px solid #F3C6C6;display:block}
+.msg.ok{background:#EAF7EF;color:var(--ok);border:1px solid #C4E8D1;display:block}
+.msg.aviso{background:#FFF6E5;color:#8A5A00;border:1px solid #F0DCB0;display:block}
+.fotos{border:1.5px dashed var(--linha);border-radius:var(--r);padding:14px;text-align:center}
+.fotos input[type=file]{display:none}
+.fotos .add{display:inline-block;padding:11px 20px;border-radius:100px;background:var(--neve);
+ color:var(--patri);font-weight:700;font-size:.9rem;cursor:pointer;border:1.5px solid var(--linha)}
+.fotos .dica{font-size:.78rem;color:var(--suave);margin-top:8px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:12px}
+.thumbs figure{position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;background:var(--neve)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs button{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;
+ border:0;background:rgba(0,0,0,.62);color:#fff;font-size:14px;line-height:1;cursor:pointer}
+.tela{display:none}.tela.ativa{display:block}
+.protocolo{background:#fff;border:1.5px dashed var(--medio);border-radius:10px;padding:16px;
+ margin-top:12px;text-align:center}
+.protocolo span{display:block;font-size:.8rem;color:var(--suave)}
+.protocolo b{font-size:1.6rem;font-family:ui-monospace,monospace;color:var(--patri)}
+.carregando{text-align:center;color:var(--suave);font-size:.9rem;padding:26px 0}
+
+.centro{text-align:center}
+header.solo .wrap{justify-content:center}
+.hero{margin:-26px -18px 22px;position:relative;background:var(--noite)}
+.hero img{width:100%;height:190px;object-fit:cover;display:block;opacity:.92}
+.cartao{border:1.5px solid var(--linha);border-radius:var(--r);padding:20px;background:#fff}
+.faixa{display:flex;align-items:center;gap:13px;background:var(--neve);border-radius:var(--r);
+ padding:14px 16px;margin:-6px 0 20px}
+.faixa .ic{flex:none;width:40px;height:40px;border-radius:10px;background:#fff;border:1.5px solid var(--linha);
+ display:flex;align-items:center;justify-content:center;color:var(--medio)}
+.faixa .tt{font-weight:700;font-size:1.02rem;line-height:1.2}
+.faixa .ss{font-size:.82rem;color:var(--suave)}
+.item .ic{flex:none;width:42px;height:42px;border-radius:11px;background:var(--neve);
+ display:flex;align-items:center;justify-content:center;color:var(--medio)}
+.item svg,.faixa svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+footer{background:var(--noite);color:#A9C0D0;font-size:.78rem;padding:18px 0;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="solo" id="topo"><div class="wrap">
+  <strong>Controle da Qualidade</strong>
+  <div class="quem" id="quem"></div>
+</div></header>
+
+<main class="wrap">
+
+  <!-- ============ 1. ACESSO ============ -->
+  <section class="tela ativa" id="tela-acesso">
+    <div class="hero">
+      <img src="img/capacetes.jpg" alt="">
+    </div>
+    <div class="centro">
+      <h1>Acesso restrito</h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Informe seu código individual de 6 dígitos.</p>
+    </div>
+    <div class="cartao">
+      <div class="campo">
+        <label for="codigo">Código de acesso</label>
+        <input type="tel" id="codigo" inputmode="numeric" maxlength="6" autocomplete="off"
+               placeholder="000000" style="text-align:center;font-size:1.5rem;letter-spacing:.35em;font-family:ui-monospace,monospace">
+      </div>
+      <button class="btn" id="btn-entrar">Entrar</button>
+      <div class="msg" id="msg-acesso"></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. MENU ============ -->
+  <section class="tela" id="tela-menu">
+    <h1>O que você vai registrar?</h1>
+    <p class="lead">Escolha o controle correspondente ao serviço executado.</p>
+    <div class="menu">
+      <button class="item" data-ir="concreto">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17V9h9l3 3h6v5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M12 9V6h4l2 3"/></svg></span><span><span class="t">Concreto</span><span class="d">Mapa de concretagem</span></span>
+      </button>
+      <button class="item" data-ir="etapa2">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L5 18a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 14h9"/></svg></span><span><span class="t">Resultado de laboratório</span><span class="d">Completar um registro já aberto</span></span>
+      </button>
+      <button class="item" disabled>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9h18M3 14h18M3 19h18"/><path d="M8 5l4-2 4 2"/></svg></span><span><span class="t">Compactação do solo</span><span class="d">Em breve</span></span>
+      </button>
+      <button class="item" disabled>
+        <span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="6" rx="1"/><rect x="3" y="13" width="18" height="6" rx="1"/><path d="M9 5v6M15 13v6"/></svg></span><span><span class="t">Bloco estrutural</span><span class="d">Em breve</span></span>
+      </button>
+      <button class="item" disabled>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg></span><span><span class="t">Transporte de resíduos</span><span class="d">Em breve</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ 3. CONCRETO ============ -->
+  <section class="tela" id="tela-concreto">
+    <div class="faixa"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17V9h9l3 3h6v5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M12 9V6h4l2 3"/></svg></span>
+      <span><span class="tt">Concreto</span><br><span class="ss">Preencha no ato da concretagem</span></span></div>
+
+    <form id="form-concreto" autocomplete="off">
+      <h2>Identificação</h2>
+      <div class="campo"><label>Obra</label><select name="obra" data-lista="OBRA" required></select></div>
+      <div class="campo"><label>Origem do concreto</label><select name="origem" id="origem" data-lista="ORIGEM_CONCRETO" required></select></div>
+      <div class="dupla">
+        <div class="campo"><label>Data da concretagem</label><input type="date" name="data_concretagem" id="data-conc" required></div>
+        <div class="campo"><label>Hora da moldagem</label><input type="time" name="hora_moldagem" required></div>
+      </div>
+      <div class="campo"><label>Local de aplicação</label><select name="local_aplicacao" data-lista="LOCAL_APLICACAO" required></select></div>
+      <div class="campo"><label>Identificação da peça</label><input type="text" name="identificacao" placeholder="Ex.: Laje bloco 2, Radier CS-27" required></div>
+      <div class="dupla">
+        <div class="campo"><label>Série / nº moldagem</label><input type="number" name="serie" inputmode="numeric"></div>
+        <div class="campo"><label>Volume (m³)</label><input type="text" name="volume" inputmode="decimal"></div>
+      </div>
+
+      <h2>Controle tecnológico</h2>
+      <div class="dupla">
+        <div class="campo"><label>FCK de projeto (MPa)</label><select name="fck" data-lista="FCK" required></select></div>
+        <div class="campo"><label>Slump de projeto</label><select name="slump_projeto" id="slump-proj" data-lista="SLUMP_PROJETO" required></select></div>
+      </div>
+      <div class="campo">
+        <label>Slump medido (cm)</label>
+        <input type="text" name="slump_medido" id="slump-med" inputmode="decimal" required>
+        <div class="msg" id="msg-slump"></div>
+      </div>
+      <div class="campo"><label>Responsável pela moldagem</label><input type="text" name="responsavel_moldagem" id="resp-mold"></div>
+
+      <!-- usinado -->
+      <div id="bloco-usinado">
+        <h2>Recebimento do caminhão</h2>
+        <div class="campo"><label>Concreteira</label><select name="concreteira" data-lista="CONCRETEIRA"></select></div>
+        <div class="campo"><label>Nº da nota fiscal</label><input type="text" name="nota_fiscal" inputmode="numeric"></div>
+        <div class="dupla">
+          <div class="campo"><label>Hora saída da usina</label><input type="time" name="hora_saida"></div>
+          <div class="campo"><label>Hora chegada na obra</label><input type="time" name="hora_chegada"></div>
+        </div>
+        <div class="dupla">
+          <div class="campo"><label>Lacre conferido</label><select name="lacre"><option value="">—</option><option>Sim</option><option>Não</option></select></div>
+          <div class="campo"><label>Correção de slump</label><select name="correcao_slump"><option value="">—</option><option>Não houve</option><option>Houve adição de água</option></select></div>
+        </div>
+      </div>
+
+      <!-- betonado -->
+      <div id="bloco-betonado" style="display:none">
+        <h2>Betonada em obra</h2>
+        <div class="campo"><label>Traço utilizado</label><input type="text" name="traco" placeholder="Ex.: 1 saco 50kg CPV + 8 latas areia + 5,5 latas brita"></div>
+        <div class="campo"><label>Hora do preparo da mistura</label><input type="time" name="hora_preparo"></div>
+      </div>
+
+      <div class="campo"><label>Aditivo</label><select name="aditivo" data-lista="ADITIVO"></select></div>
+
+      <h2>Evidências</h2>
+      <div class="campo">
+        <label>Foto do local de aplicação</label>
+        <div class="fotos">
+          <label class="add" for="f-local">Adicionar fotos</label>
+          <input type="file" id="f-local" accept="image/*" multiple>
+          <div class="dica">Você pode tirar na hora ou escolher da galeria</div>
+          <div class="thumbs" id="t-local"></div>
+        </div>
+      </div>
+      <div class="campo" id="campo-nf">
+        <label>Foto da nota fiscal</label>
+        <div class="fotos">
+          <label class="add" for="f-nf">Adicionar fotos</label>
+          <input type="file" id="f-nf" accept="image/*" multiple>
+          <div class="dica">Você pode tirar na hora ou escolher da galeria</div>
+          <div class="thumbs" id="t-nf"></div>
+        </div>
+      </div>
+
+      <div class="campo"><label>Observações <span class="opc">(opcional)</span></label><textarea name="observacoes"></textarea></div>
+
+      <button class="btn" type="submit" id="btn-salvar">Registrar concretagem</button>
+      <button class="btn sec" type="button" data-voltar>Voltar ao menu</button>
+    </form>
+    <div class="msg" id="msg-concreto"></div>
+    <div id="ok-concreto"></div>
+  </section>
+
+  <!-- ============ 4. ETAPA 2 ============ -->
+  <section class="tela" id="tela-etapa2">
+    <div class="faixa"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L5 18a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 14h9"/></svg></span>
+      <span><span class="tt">Resultado de laboratório</span><br><span class="ss">Complete um registro já aberto</span></span></div>
+
+    <div class="campo"><label>Número do registro</label><input type="number" id="busca-reg" inputmode="numeric"></div>
+    <button class="btn" id="btn-buscar">Buscar registro</button>
+    <div class="msg" id="msg-busca"></div>
+
+    <form id="form-etapa2" autocomplete="off" style="display:none">
+      <div class="msg ok" id="resumo-reg" style="display:block"></div>
+      <div class="campo"><label>Laboratório</label><select name="laboratorio" data-lista="LABORATORIO" required></select></div>
+
+      <h2>7 dias</h2>
+      <div class="campo"><label>Data do rompimento</label><input type="date" name="data7"></div>
+      <div class="dupla">
+        <div class="campo"><label>CP I — carga (t)</label><input type="text" name="c7_cp1" inputmode="decimal"></div>
+        <div class="campo"><label>CP II — carga (t)</label><input type="text" name="c7_cp2" inputmode="decimal"></div>
+      </div>
+      <div class="dupla">
+        <div class="campo"><label>CP I — resist. (MPa)</label><input type="text" name="r7_cp1" inputmode="decimal"></div>
+        <div class="campo"><label>CP II — resist. (MPa)</label><input type="text" name="r7_cp2" inputmode="decimal"></div>
+      </div>
+
+      <h2>28 dias</h2>
+      <div class="campo"><label>Data do rompimento</label><input type="date" name="data28"></div>
+      <div class="dupla">
+        <div class="campo"><label>CP I — carga (t)</label><input type="text" name="c28_cp1" inputmode="decimal"></div>
+        <div class="campo"><label>CP II — carga (t)</label><input type="text" name="c28_cp2" inputmode="decimal"></div>
+      </div>
+      <div class="dupla">
+        <div class="campo"><label>CP I — resist. (MPa)</label><input type="text" name="r28_cp1" inputmode="decimal"></div>
+        <div class="campo"><label>CP II — resist. (MPa)</label><input type="text" name="r28_cp2" inputmode="decimal"></div>
+      </div>
+
+      <h2>Laudo</h2>
+      <div class="campo">
+        <div class="fotos">
+          <label class="add" for="f-laudo">Anexar laudo</label>
+          <input type="file" id="f-laudo" accept="image/*,application/pdf" multiple>
+          <div class="dica">Foto ou PDF do laudo do laboratório</div>
+          <div class="thumbs" id="t-laudo"></div>
+        </div>
+      </div>
+
+      <button class="btn" type="submit" id="btn-etapa2">Salvar resultado</button>
+      <button class="btn sec" type="button" data-voltar>Voltar ao menu</button>
+    </form>
+    <div class="msg" id="msg-etapa2"></div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">Patrimonial Serviços Especializados LTDA</div></footer>
+
+<script>
+/* ====== CONFIGURAR APOS PUBLICAR O APPS SCRIPT ====== */
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxQwIda3kUbtXgvqnnI0vRgxjQVhgYek5Z113DE46XaWrH1VZDq2vNkjL2CQ3L2LHll6g/exec';
+/* ==================================================== */
+
+var sessao = { codigo: '', token: '', nome: '', cargo: '' };
+var listas = {};
+var arquivos = { local: [], nf: [], laudo: [] };
+
+function $(s){ return document.querySelector(s); }
+function tela(id){
+  document.querySelectorAll('.tela').forEach(function(t){ t.classList.remove('ativa'); });
+  $('#'+id).classList.add('ativa');
+  window.scrollTo(0,0);
+}
+function aviso(el, texto, tipo){
+  var e = $(el);
+  e.className = 'msg ' + (tipo||'erro');
+  e.textContent = texto;
+  if(!texto) e.style.display='none';
+}
+function limpar(el){ var e=$(el); e.className='msg'; e.textContent=''; e.style.display='none'; }
+
+function chamar(dados){
+  var corpo = new FormData();
+  for (var k in dados) if (dados[k] !== undefined && dados[k] !== null) corpo.append(k, dados[k]);
+  return fetch(WEBAPP_URL, { method:'POST', body: corpo }).then(function(r){ return r.json(); });
+}
+
+/* ---------- ACESSO ---------- */
+$('#btn-entrar').addEventListener('click', function(){
+  var cod = $('#codigo').value.replace(/\D/g,'');
+  if (cod.length < 4){ aviso('#msg-acesso','Informe seu código de acesso.'); return; }
+  this.disabled = true; this.textContent = 'Verificando...';
+  var b = this;
+  chamar({ acao:'login', codigo: cod }).then(function(r){
+    b.disabled=false; b.textContent='Entrar';
+    if (r.erro){ aviso('#msg-acesso', r.erro); return; }
+    sessao = { codigo: cod, token: r.token, nome: r.nome, cargo: r.cargo };
+    document.getElementById('topo').classList.remove('solo');
+    $('#quem').innerHTML = r.nome + '<br><button id="sair">sair</button>';
+    $('#sair').addEventListener('click', function(){ location.reload(); });
+    limpar('#msg-acesso');
+    return chamar({ acao:'config', codigo: cod, token: r.token }).then(function(c){
+      if (c.erro){ aviso('#msg-acesso', c.erro); return; }
+      listas = c.listas || {};
+      montarListas();
+      tela('tela-menu');
+    });
+  }).catch(function(){
+    b.disabled=false; b.textContent='Entrar';
+    aviso('#msg-acesso','Não foi possível conectar. Verifique a internet e tente de novo.');
+  });
+});
+$('#codigo').addEventListener('keydown', function(e){ if(e.key==='Enter') $('#btn-entrar').click(); });
+
+function montarListas(){
+  document.querySelectorAll('select[data-lista]').forEach(function(sel){
+    var itens = listas[sel.dataset.lista] || [];
+    sel.innerHTML = '<option value="">Selecione</option>';
+    itens.forEach(function(v){
+      var o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o);
+    });
+  });
+  if (sessao.nome) $('#resp-mold').value = sessao.nome;
+  $('#data-conc').value = new Date().toISOString().slice(0,10);
+}
+
+/* ---------- MENU ---------- */
+document.querySelectorAll('[data-ir]').forEach(function(b){
+  b.addEventListener('click', function(){ tela('tela-' + b.dataset.ir); });
+});
+document.querySelectorAll('[data-voltar]').forEach(function(b){
+  b.addEventListener('click', function(){ tela('tela-menu'); });
+});
+
+/* ---------- ORIGEM ---------- */
+$('#origem').addEventListener('change', function(){
+  var usinado = this.value !== 'Betonado em obra';
+  $('#bloco-usinado').style.display = usinado ? '' : 'none';
+  $('#bloco-betonado').style.display = usinado ? 'none' : '';
+  $('#campo-nf').style.display = usinado ? '' : 'none';
+});
+
+/* ---------- SLUMP ---------- */
+function faixa(txt){
+  var m = String(txt).replace(',','.').match(/(\d+(?:\.\d+)?)\s*(?:±|\+\-|\+\/\-)\s*(\d+(?:\.\d+)?)/);
+  if (m) return [parseFloat(m[1])-parseFloat(m[2]), parseFloat(m[1])+parseFloat(m[2])];
+  var s = String(txt).match(/(\d+(?:\.\d+)?)/);
+  return s ? [parseFloat(s[1])-2, parseFloat(s[1])+2] : null;
+}
+function conferirSlump(){
+  var p = $('#slump-proj').value, v = parseFloat(String($('#slump-med').value).replace(',','.'));
+  if (!p || isNaN(v)){ limpar('#msg-slump'); return; }
+  var f = faixa(p);
+  if (!f){ limpar('#msg-slump'); return; }
+  if (v < f[0] || v > f[1])
+    aviso('#msg-slump','Fora da faixa de projeto ('+f[0]+' a '+f[1]+' cm). Pode registrar, mas será marcado como não conforme e o engenheiro será avisado.','aviso');
+  else
+    aviso('#msg-slump','Dentro da faixa ('+f[0]+' a '+f[1]+' cm).','ok');
+}
+$('#slump-med').addEventListener('input', conferirSlump);
+$('#slump-proj').addEventListener('change', conferirSlump);
+
+/* ---------- FOTOS ---------- */
+function comprimir(file){
+  return new Promise(function(res){
+    if (file.type === 'application/pdf'){
+      var fr = new FileReader();
+      fr.onload = function(){ res(fr.result); };
+      fr.readAsDataURL(file);
+      return;
+    }
+    var fr = new FileReader();
+    fr.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var max = 1600, w = img.width, h = img.height;
+        if (w > max || h > max){ var e = max/Math.max(w,h); w = Math.round(w*e); h = Math.round(h*e); }
+        var c = document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        res(c.toDataURL('image/jpeg', 0.75));
+      };
+      img.onerror = function(){ res(fr.result); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+function ligarFotos(inputId, thumbsId, chave){
+  $(inputId).addEventListener('change', function(){
+    var lista = Array.prototype.slice.call(this.files);
+    this.value = '';
+    lista.forEach(function(f){
+      comprimir(f).then(function(dataUrl){
+        arquivos[chave].push(dataUrl);
+        desenhar(thumbsId, chave);
+      });
+    });
+  });
+}
+function desenhar(thumbsId, chave){
+  var box = $(thumbsId); box.innerHTML = '';
+  arquivos[chave].forEach(function(d, i){
+    var fig = document.createElement('figure');
+    var ehPdf = d.indexOf('data:application/pdf') === 0;
+    fig.innerHTML = ehPdf
+      ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:.75rem;color:#5B7183">PDF</div>'
+      : '<img src="'+d+'" alt="">';
+    var x = document.createElement('button');
+    x.type='button'; x.textContent='×';
+    x.onclick = function(){ arquivos[chave].splice(i,1); desenhar(thumbsId, chave); };
+    fig.appendChild(x); box.appendChild(fig);
+  });
+}
+ligarFotos('#f-local','#t-local','local');
+ligarFotos('#f-nf','#t-nf','nf');
+ligarFotos('#f-laudo','#t-laudo','laudo');
+
+/* ---------- SALVAR ETAPA 1 ---------- */
+$('#form-concreto').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  limpar('#msg-concreto');
+  var b = $('#btn-salvar'); b.disabled = true; b.textContent = 'Enviando...';
+
+  var dados = { acao:'salvar', tipo:'CONCRETO', codigo: sessao.codigo, token: sessao.token };
+  new FormData(this).forEach(function(v,k){ dados[k] = v; });
+  arquivos.local.forEach(function(d,i){ dados['foto_local_'+(i+1)] = d; });
+  arquivos.nf.forEach(function(d,i){ dados['foto_nf_'+(i+1)] = d; });
+
+  chamar(dados).then(function(r){
+    b.disabled=false; b.textContent='Registrar concretagem';
+    if (r.erro){ aviso('#msg-concreto', r.erro); return; }
+    $('#form-concreto').style.display='none';
+    $('#ok-concreto').innerHTML =
+      '<div class="msg ok" style="display:block"><b>Concretagem registrada.</b><br>' +
+      (r.slump==='FORA DA FAIXA' ? 'Atenção: slump fora da faixa. O engenheiro foi notificado.' : 'Slump dentro da faixa de projeto.') +
+      '</div><div class="protocolo"><span>Número do registro</span><b>'+r.registro+'</b></div>' +
+      '<div class="msg aviso" style="display:block">Guarde este número. É com ele que o resultado do laboratório será lançado depois.</div>' +
+      '<button class="btn sec" onclick="location.reload()">Registrar outra concretagem</button>';
+    window.scrollTo(0,0);
+  }).catch(function(){
+    b.disabled=false; b.textContent='Registrar concretagem';
+    aviso('#msg-concreto','Falha no envio. Verifique a internet e tente de novo — nada foi perdido.');
+  });
+});
+
+/* ---------- ETAPA 2 ---------- */
+$('#btn-buscar').addEventListener('click', function(){
+  var reg = $('#busca-reg').value.trim();
+  if (!reg){ aviso('#msg-busca','Informe o número do registro.'); return; }
+  limpar('#msg-busca');
+  var b=this; b.disabled=true; b.textContent='Buscando...';
+  chamar({ acao:'buscar', registro: reg, codigo: sessao.codigo, token: sessao.token }).then(function(r){
+    b.disabled=false; b.textContent='Buscar registro';
+    if (r.erro){ aviso('#msg-busca', r.erro); $('#form-etapa2').style.display='none'; return; }
+    $('#resumo-reg').innerHTML = '<b>Registro '+r.registro+'</b><br>'+r.obra+' — '+(r.identificacao||r.local)+
+      '<br>Concretagem em '+r.data+' · FCK '+r.fck+' MPa';
+    $('#form-etapa2').style.display='';
+    $('#form-etapa2').dataset.registro = r.registro;
+  }).catch(function(){
+    b.disabled=false; b.textContent='Buscar registro';
+    aviso('#msg-busca','Não foi possível conectar.');
+  });
+});
+
+$('#form-etapa2').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  limpar('#msg-etapa2');
+  var b = $('#btn-etapa2'); b.disabled=true; b.textContent='Salvando...';
+  var dados = { acao:'etapa2', registro: this.dataset.registro, codigo: sessao.codigo, token: sessao.token };
+  new FormData(this).forEach(function(v,k){ dados[k]=v; });
+  arquivos.laudo.forEach(function(d,i){ dados['laudo_'+(i+1)] = d; });
+
+  chamar(dados).then(function(r){
+    b.disabled=false; b.textContent='Salvar resultado';
+    if (r.erro){ aviso('#msg-etapa2', r.erro); return; }
+    var texto = r.conformidade === 'NC'
+      ? 'Resultado salvo. NÃO CONFORME — resistência abaixo do FCK de projeto. RNC sinalizada e responsáveis notificados.'
+      : (r.conformidade === 'C' ? 'Resultado salvo. Conforme.' : 'Resultado parcial salvo.');
+    aviso('#msg-etapa2', texto, r.conformidade === 'NC' ? 'erro' : 'ok');
+    $('#form-etapa2').style.display='none';
+    window.scrollTo(0,0);
+  }).catch(function(){
+    b.disabled=false; b.textContent='Salvar resultado';
+    aviso('#msg-etapa2','Falha no envio. Tente de novo.');
+  });
+});
+</script>
+</body>
+</html>
