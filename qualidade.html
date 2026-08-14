@@ -787,6 +787,21 @@ ligarFotos('#f-laudo','#t-laudo','laudo');
 
 
 /* ---------- CONSULTA E LAUDO ---------- */
+function baixarPdf(r){
+  if (r.dados){
+    var bin = atob(r.dados.split(',')[1]);
+    var buf = new Uint8Array(bin.length);
+    for (var i=0;i<bin.length;i++) buf[i] = bin.charCodeAt(i);
+    var url = URL.createObjectURL(new Blob([buf], {type:'application/pdf'}));
+    var a = document.createElement('a');
+    a.href = url; a.download = r.nome || 'documento.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    return true;
+  }
+  if (r.url){ window.open(r.url, '_blank'); return true; }
+  return false;
+}
 $('#f-tipo').addEventListener('change', function(){
   $('#btn-rel-res').style.display = (this.value === 'RESIDUO') ? '' : 'none';
   $('#lista-reg').innerHTML = ''; limpar('#msg-consulta');
@@ -800,8 +815,9 @@ $('#btn-rel-res').addEventListener('click', function(){
   .then(function(r){
     b.disabled=false; b.textContent='Gerar relatório do período';
     if (r.erro){ aviso('#msg-consulta', r.erro); return; }
-    aviso('#msg-consulta','Relatório com '+r.transportes+' transporte(s) gerado e salvo no Drive.','ok');
-    window.open(r.url, '_blank');
+    baixarPdf(r);
+    aviso('#msg-consulta','Relatório com '+r.transportes+' transporte(s) baixado e salvo no Drive.' +
+      (r.liberado ? '' : ' O link do Drive pode exigir permissão — o arquivo foi baixado no aparelho.'), 'ok');
   }).catch(function(){
     b.disabled=false; b.textContent='Gerar relatório do período';
     aviso('#msg-consulta','Falha ao gerar o relatório.');
@@ -857,8 +873,9 @@ function gerarLaudo(registro, bt, tipo){
   .then(function(r){
     bt.disabled = false; bt.textContent = 'Laudo';
     if (r.erro){ aviso('#msg-consulta', r.erro); return; }
-    aviso('#msg-consulta','Laudo do registro '+registro+' gerado e salvo no Drive.','ok');
-    window.open(r.url, '_blank');
+    baixarPdf(r);
+    aviso('#msg-consulta','Laudo do registro '+registro+' baixado e salvo no Drive.' +
+      (r.liberado ? '' : ' O link do Drive pode exigir permissão — o arquivo foi baixado no aparelho.'), 'ok');
   }).catch(function(){
     bt.disabled=false; bt.textContent='Laudo';
     aviso('#msg-consulta','Falha ao gerar o laudo.');
