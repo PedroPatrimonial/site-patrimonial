@@ -111,6 +111,25 @@ textarea{min-height:86px;resize:vertical}
 .ponto{border:1px solid var(--linha);border-radius:var(--r);padding:13px 14px;margin-bottom:11px;background:var(--neve)}
 .pt-cab{font-weight:700;font-size:.86rem;color:var(--patri);margin-bottom:9px}
 .ponto .campo:last-child{margin-bottom:0}
+.assbox{border:1.5px dashed var(--linha);border-radius:var(--r);padding:12px;background:#fff;text-align:center}
+.assbox canvas{width:100%;height:150px;border:1px solid var(--linha);border-radius:9px;
+ background:#fff;touch-action:none;display:block}
+.asshint{font-size:.77rem;color:var(--suave);margin:7px 0 9px}
+.epi-item{border:1px solid var(--linha);border-radius:var(--r);padding:12px;margin-bottom:10px;background:var(--neve);position:relative}
+.epi-item .x{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
+ border:0;background:#E4E9ED;color:#5B7183;font-size:15px;line-height:1;cursor:pointer}
+.marcas{border:1px solid var(--linha);border-radius:var(--r);padding:10px 12px;background:#fff;margin-bottom:6px}
+.marcas label{display:flex;gap:9px;align-items:flex-start;font-weight:400;font-size:.86rem;
+ padding:5px 0;margin:0;cursor:pointer;line-height:1.35}
+.marcas input{width:19px;height:19px;flex:none;margin:1px 0 0}
+.eqp{display:flex;align-items:center;gap:10px;border:1px solid var(--linha);border-radius:var(--r);
+ padding:11px 12px;margin-bottom:9px;background:#fff}
+.eqp .info{flex:1;min-width:0}
+.eqp .n{font-weight:700;font-size:.9rem}
+.eqp .f{font-size:.78rem;color:var(--suave)}
+.eqp .alerta{font-size:.75rem;color:var(--erro);font-weight:700}
+.eqp canvas{width:120px;height:52px;border:1px solid var(--linha);border-radius:7px;background:#fff;touch-action:none}
+.eqp .x{width:26px;height:26px;border-radius:50%;border:0;background:#E4E9ED;color:#5B7183;cursor:pointer;flex:none}
 footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
 </style>
 </head>
@@ -163,6 +182,15 @@ footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
       </button>
       <button type="button" class="item" data-ir="bloco2">
         <span class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L5 18a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 14h9"/></svg></span><span class="txt"><span class="t">Ensaio do bloco</span><span class="d">Lançar o resultado de compressão do lote</span></span>
+      </button>
+      <button type="button" class="item" data-ir="os">
+        <span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="txt"><span class="t">Ordem de Serviço</span><span class="d">Emissão diária, todos os serviços</span></span>
+      </button>
+      <button type="button" class="item" data-ir="pt">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h2V4a1 1 0 0 1 1-1z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="txt"><span class="t">Permissão de Trabalho</span><span class="d">Altura, eletricidade, confinado e trabalho a quente</span></span>
+      </button>
+      <button type="button" class="item" data-ir="epi">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="txt"><span class="t">Entrega de EPI</span><span class="d">Registrar entrega e emitir a ficha assinada</span></span>
       </button>
       <button type="button" class="item" data-ir="residuo">
         <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg></span><span class="txt"><span class="t">Transporte de resíduos</span><span class="d">Registrar saída de carga do canteiro</span></span>
@@ -608,6 +636,121 @@ footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
     <div id="ok-residuo"></div>
   </section>
 
+
+  <section class="tela" id="tela-epi">
+    <div class="faixa"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="txt"><span class="tt">Entrega de EPI</span><span class="ss">Vários equipamentos numa entrega</span></span></div>
+
+    <div class="campo"><label>Funcionário</label><select id="epi-pessoa"><option value="">Carregando...</option></select></div>
+    <div class="msg" id="msg-aso"></div>
+    <div class="campo"><label>Data da entrega</label><input type="date" id="epi-data"></div>
+
+    <h2>Equipamentos</h2>
+    <div id="epi-itens"></div>
+    <button type="button" class="btn sec" id="epi-add">Adicionar equipamento</button>
+
+    <h2>Assinatura do funcionário</h2>
+    <div class="assbox">
+      <canvas id="epi-ass" width="620" height="200"></canvas>
+      <div class="asshint">Assine com o dedo dentro do quadro</div>
+      <button type="button" class="btn sec" id="epi-limpar">Limpar assinatura</button>
+    </div>
+
+    <div class="campo" style="margin-top:15px"><label>Observações <span class="opc">(opcional)</span></label><textarea id="epi-obs"></textarea></div>
+    <button type="button" class="btn" id="btn-epi">Registrar entrega</button>
+    <button type="button" class="btn sec" id="btn-ficha">Emitir ficha do funcionário</button>
+    <button type="button" class="btn sec" data-voltar>Voltar ao menu</button>
+    <div class="msg" id="msg-epi"></div>
+  </section>
+
+
+  <section class="tela" id="tela-pt">
+    <div class="faixa"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h2V4a1 1 0 0 1 1-1z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="txt"><span class="tt">Permissão de Trabalho</span><span class="ss">Modelo pré-configurado por tipo de risco</span></span></div>
+
+    <div class="campo"><label>Modelo</label><select id="pt-modelo"><option value="">Carregando...</option></select></div>
+    <div class="msg" id="msg-modelo"></div>
+
+    <div class="campo"><label>Obra</label><select id="pt-obra" data-lista="OBRA"></select></div>
+    <div class="dupla">
+      <div class="campo"><label>Data início</label><input type="date" id="pt-di"></div>
+      <div class="campo"><label>Data fim</label><input type="date" id="pt-df"></div>
+    </div>
+    <div class="dupla">
+      <div class="campo"><label>Hora início</label><input type="time" id="pt-hi" value="07:00"></div>
+      <div class="campo"><label>Hora fim</label><input type="time" id="pt-hf" value="17:00"></div>
+    </div>
+    <div class="campo"><label>Local do trabalho</label><input type="text" id="pt-local" placeholder="Ex.: Qd. C, casas 14 a 25"></div>
+    <div class="campo"><label>Descrição do trabalho</label><textarea id="pt-desc"></textarea></div>
+    <div class="dupla">
+      <div class="campo"><label>Empresa executante</label><input type="text" id="pt-empresa" value="Patrimonial Serviços Especializados LTDA"></div>
+      <div class="campo"><label>Encarregado</label><input type="text" id="pt-enc"></div>
+    </div>
+    <div class="dupla">
+      <div class="campo"><label>Área restrita</label><select id="pt-area"><option>Não</option><option>Sim</option></select></div>
+      <div class="campo"><label>Mão de obra</label><select id="pt-mo"><option>Interna</option><option>Externa</option></select></div>
+    </div>
+
+    <h2>Perigos potenciais</h2>
+    <div class="marcas" id="pt-riscos"></div>
+    <h2>EPI necessários</h2>
+    <div class="marcas" id="pt-epis"></div>
+    <h2>Medidas preventivas</h2>
+    <div class="marcas" id="pt-medidas"></div>
+
+    <h2>Pessoas liberadas</h2>
+    <div class="campo"><label>Incluir na equipe</label><select id="pt-add-pessoa"><option value="">Selecione</option></select></div>
+    <div id="pt-equipe"></div>
+
+    <h2>Responsáveis</h2>
+    <div class="assbox">
+      <div class="asshint" style="margin-top:0">Responsável da Contratada</div>
+      <canvas id="pt-ass-c" width="620" height="200"></canvas>
+      <button type="button" class="btn sec" data-limpa="pt-ass-c">Limpar</button>
+    </div>
+    <div class="assbox" style="margin-top:11px">
+      <div class="asshint" style="margin-top:0">Responsável da Área <span style="color:#8A96A3">(opcional)</span></div>
+      <canvas id="pt-ass-a" width="620" height="200"></canvas>
+      <button type="button" class="btn sec" data-limpa="pt-ass-a">Limpar</button>
+    </div>
+
+    <div class="campo" style="margin-top:15px"><label>Observações <span class="opc">(opcional)</span></label><textarea id="pt-obs"></textarea></div>
+    <button type="button" class="btn" id="btn-pt">Emitir Permissão de Trabalho</button>
+    <button type="button" class="btn sec" data-voltar>Voltar ao menu</button>
+    <div class="msg" id="msg-pt"></div>
+  </section>
+
+
+  <section class="tela" id="tela-os">
+    <div class="faixa"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <span class="txt"><span class="tt">Ordem de Serviço</span><span class="ss">NR-01 · uma por serviço, por dia</span></span></div>
+
+    <div class="campo"><label>Serviço</label><select id="os-servico"><option value="">Carregando...</option></select></div>
+    <div class="campo"><label>Obra</label><select id="os-obra" data-lista="OBRA"></select></div>
+    <div class="dupla">
+      <div class="campo"><label>Data</label><input type="date" id="os-data"></div>
+      <div class="campo"><label>Local</label><input type="text" id="os-local" placeholder="Ex.: Qd. C, casas 14 a 25"></div>
+    </div>
+
+    <h2>Riscos da atividade</h2>
+    <div class="marcas" id="os-riscos"></div>
+    <h2>Medidas de prevenção</h2>
+    <div class="marcas" id="os-medidas"></div>
+    <h2>EPI obrigatório</h2>
+    <div class="marcas" id="os-epis"></div>
+    <h2>Proibições</h2>
+    <div class="marcas" id="os-proib"></div>
+
+    <h2>Equipe cientificada</h2>
+    <div class="campo"><label>Incluir na equipe</label><select id="os-add-pessoa"><option value="">Selecione</option></select></div>
+    <div id="os-equipe"></div>
+
+    <div class="campo" style="margin-top:15px"><label>Observações <span class="opc">(opcional)</span></label><textarea id="os-obs"></textarea></div>
+    <button type="button" class="btn" id="btn-os">Emitir Ordem de Serviço</button>
+    <button type="button" class="btn sec" data-voltar>Voltar ao menu</button>
+    <div class="msg" id="msg-os"></div>
+  </section>
+
 </div></main>
 
 <footer>Patrimonial Serviços Especializados LTDA</footer>
@@ -692,6 +835,11 @@ function montarListas(){
   $('#data-bloco').value = new Date().toISOString().slice(0,10);
   $('#data-solo').value = new Date().toISOString().slice(0,10);
   $('#data-res').value = new Date().toISOString().slice(0,10);
+  $('#epi-data').value = new Date().toISOString().slice(0,10);
+  carregarRH();
+  carregarPT();
+  carregarOS();
+  $('#os-data').value = new Date().toISOString().slice(0,10);
 }
 
 /* ---------- MENU ---------- */
@@ -1056,6 +1204,382 @@ $('#form-residuo').addEventListener('submit', function(ev){
   }).catch(function(){
     b.disabled=false; b.textContent='Registrar transporte';
     aviso('#msg-residuo','Falha no envio. Verifique a internet e tente de novo.');
+  });
+});
+
+
+/* ---------- ENTREGA DE EPI ---------- */
+var pessoasRH = [], catalogoEpi = [];
+
+function carregarRH(){
+  chamar({ acao:'pessoas', codigo:sessao.codigo, token:sessao.token }).then(function(r){
+    if (r.erro || !r.pessoas) return;
+    pessoasRH = r.pessoas;
+    var s = $('#epi-pessoa');
+    s.innerHTML = '<option value="">Selecione</option>';
+    pessoasRH.forEach(function(p,i){
+      var o = document.createElement('option');
+      o.value = i; o.textContent = p.nome + ' — ' + (p.funcao||'') + (p.vinculo? ' ('+p.vinculo+')':'');
+      s.appendChild(o);
+    });
+    if (!pessoasRH.length) s.innerHTML = '<option value="">Nenhuma pessoa cadastrada na aba PESSOAS</option>';
+    var so = $('#os-add-pessoa');
+    so.innerHTML = '<option value="">Selecione</option>';
+    pessoasRH.forEach(function(p,i){
+      var o=document.createElement('option'); o.value=i;
+      o.textContent = p.nome + ' — ' + (p.funcao||''); so.appendChild(o);
+    });
+    var sp = $('#pt-add-pessoa');
+    sp.innerHTML = '<option value="">Selecione</option>';
+    pessoasRH.forEach(function(p,i){
+      var o=document.createElement('option'); o.value=i;
+      o.textContent = p.nome + ' — ' + (p.funcao||''); sp.appendChild(o);
+    });
+  });
+  chamar({ acao:'catalogo_epi', codigo:sessao.codigo, token:sessao.token }).then(function(r){
+    if (r.erro || !r.itens) return;
+    catalogoEpi = r.itens;
+    if (!$('#epi-itens').children.length) novoItemEpi();
+  });
+}
+
+$('#epi-pessoa').addEventListener('change', function(){
+  var p = pessoasRH[this.value];
+  if (!p){ limpar('#msg-aso'); return; }
+  if (p.asoVencido === true) aviso('#msg-aso','ASO VENCIDO em '+p.asoValidade+'. Regularize antes de liberar o trabalhador.','erro');
+  else if (p.diasAso !== null && p.diasAso <= 30) aviso('#msg-aso','ASO vence em '+p.diasAso+' dia(s), em '+p.asoValidade+'.','aviso');
+  else if (p.asoValidade) aviso('#msg-aso','ASO válido até '+p.asoValidade+'.','ok');
+  else aviso('#msg-aso','ASO não cadastrado para esta pessoa.','aviso');
+});
+
+function novoItemEpi(){
+  var d = document.createElement('div'); d.className='epi-item';
+  var opts = '<option value="">Selecione o equipamento</option>' +
+    catalogoEpi.map(function(c,i){ return '<option value="'+i+'">'+c.epi+'</option>'; }).join('');
+  d.innerHTML =
+    '<button type="button" class="x">&times;</button>' +
+    '<div class="campo"><label>Equipamento</label><select class="i-epi">'+opts+'</select></div>' +
+    '<div class="dupla">' +
+      '<div class="campo"><label>Nº C.A.</label><input type="text" class="i-ca" inputmode="numeric"></div>' +
+      '<div class="campo"><label>Vencimento</label><input type="date" class="i-venc"></div>' +
+    '</div>' +
+    '<div class="dupla">' +
+      '<div class="campo"><label>Quantidade</label><input type="number" class="i-qtd" value="1" min="1"></div>' +
+      '<div class="campo"><label>Ação</label><select class="i-acao"><option>Entrega</option><option>Troca</option><option>Devolução</option></select></div>' +
+    '</div>';
+  d.querySelector('.x').onclick = function(){ d.remove(); };
+  d.querySelector('.i-epi').addEventListener('change', function(){
+    var c = catalogoEpi[this.value];
+    if (!c) return;
+    d.querySelector('.i-ca').value = c.ca || '';
+    if (c.validade){
+      var pt = c.validade.split('/');
+      if (pt.length===3) d.querySelector('.i-venc').value = pt[2]+'-'+pt[1]+'-'+pt[0];
+    }
+  });
+  $('#epi-itens').appendChild(d);
+}
+$('#epi-add').addEventListener('click', novoItemEpi);
+
+/* assinatura no dedo */
+(function(){
+  var c = $('#epi-ass'), ctx = c.getContext('2d'), desenhando = false, temTraco = false;
+  function ajustar(){
+    var r = c.getBoundingClientRect();
+    c.width = r.width * 2; c.height = r.height * 2;
+    ctx.scale(2,2); ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.strokeStyle = '#1C3752';
+  }
+  setTimeout(ajustar, 300);
+  window.addEventListener('resize', function(){ if (!temTraco) ajustar(); });
+  function pos(ev){
+    var r = c.getBoundingClientRect();
+    var t = ev.touches ? ev.touches[0] : ev;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  function inicio(ev){ ev.preventDefault(); desenhando = true; var p = pos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function move(ev){ if(!desenhando) return; ev.preventDefault(); var p = pos(ev); ctx.lineTo(p.x,p.y); ctx.stroke(); temTraco = true; }
+  function fim(){ desenhando = false; }
+  ['mousedown','touchstart'].forEach(function(e){ c.addEventListener(e, inicio, {passive:false}); });
+  ['mousemove','touchmove'].forEach(function(e){ c.addEventListener(e, move, {passive:false}); });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(function(e){ c.addEventListener(e, fim); });
+  $('#epi-limpar').addEventListener('click', function(){ ctx.clearRect(0,0,c.width,c.height); temTraco = false; });
+  window.assinaturaEpi = function(){ return temTraco ? c.toDataURL('image/png') : ''; };
+})();
+
+$('#btn-epi').addEventListener('click', function(){
+  limpar('#msg-epi');
+  var idx = $('#epi-pessoa').value;
+  var p = pessoasRH[idx];
+  if (!p){ aviso('#msg-epi','Selecione o funcionário.'); return; }
+
+  var itens = [];
+  document.querySelectorAll('#epi-itens .epi-item').forEach(function(d){
+    var sel = d.querySelector('.i-epi');
+    var nome = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+    if (!sel.value) return;
+    itens.push({ epi:nome, ca:d.querySelector('.i-ca').value,
+                 venc:d.querySelector('.i-venc').value, qtd:d.querySelector('.i-qtd').value,
+                 acao:d.querySelector('.i-acao').value });
+  });
+  if (!itens.length){ aviso('#msg-epi','Inclua ao menos um equipamento.'); return; }
+
+  var ass = window.assinaturaEpi();
+  if (!ass){ aviso('#msg-epi','O funcionário precisa assinar no quadro.'); return; }
+
+  var b=this; b.disabled=true; b.textContent='Enviando...';
+  chamar({ acao:'salvar_epi', codigo:sessao.codigo, token:sessao.token,
+    matricula:p.matricula, nome:p.nome, funcao:p.funcao, obra:p.obra,
+    data_entrega:$('#epi-data').value, itens:JSON.stringify(itens),
+    assinatura:ass, observacoes:$('#epi-obs').value })
+  .then(function(r){
+    b.disabled=false; b.textContent='Registrar entrega';
+    if (r.erro){ aviso('#msg-epi', r.erro); return; }
+    aviso('#msg-epi','Entrega '+r.entrega+' registrada com '+r.itens+' equipamento(s). Emita a ficha abaixo.','ok');
+    $('#epi-itens').innerHTML=''; novoItemEpi();
+    $('#epi-limpar').click();
+    window.scrollTo(0,0);
+  }).catch(function(){
+    b.disabled=false; b.textContent='Registrar entrega';
+    aviso('#msg-epi','Falha no envio. Tente de novo.');
+  });
+});
+
+$('#btn-ficha').addEventListener('click', function(){
+  limpar('#msg-epi');
+  var p = pessoasRH[$('#epi-pessoa').value];
+  if (!p){ aviso('#msg-epi','Selecione o funcionário.'); return; }
+  var b=this; b.disabled=true; b.textContent='Gerando...';
+  chamar({ acao:'ficha_epi', codigo:sessao.codigo, token:sessao.token,
+           matricula:p.matricula, nome:p.nome })
+  .then(function(r){
+    b.disabled=false; b.textContent='Emitir ficha do funcionário';
+    if (r.erro){ aviso('#msg-epi', r.erro); return; }
+    baixarPdf(r);
+    aviso('#msg-epi','Ficha de '+p.nome+' emitida com '+r.entregas+' item(ns).','ok');
+  }).catch(function(){
+    b.disabled=false; b.textContent='Emitir ficha do funcionário';
+    aviso('#msg-epi','Falha ao gerar a ficha.');
+  });
+});
+
+
+/* ---------- PERMISSAO DE TRABALHO ---------- */
+var modelosPT = [], modeloAtual = null, equipePT = [];
+
+function carregarPT(){
+  chamar({ acao:'modelos_pt', codigo:sessao.codigo, token:sessao.token }).then(function(r){
+    if (r.erro || !r.modelos) return;
+    modelosPT = r.modelos;
+    var s = $('#pt-modelo');
+    s.innerHTML = '<option value="">Selecione o tipo de trabalho</option>';
+    modelosPT.forEach(function(m,i){
+      var o=document.createElement('option'); o.value=i;
+      o.textContent = m.modelo + ' (' + m.norma + ')'; s.appendChild(o);
+    });
+  });
+}
+
+function marcas(alvo, itens, marcado){
+  var box = $(alvo); box.innerHTML='';
+  itens.forEach(function(t){
+    var l=document.createElement('label');
+    var i=document.createElement('input'); i.type='checkbox'; i.value=t; i.checked=!!marcado;
+    var s=document.createElement('span'); s.textContent=t;
+    l.appendChild(i); l.appendChild(s); box.appendChild(l);
+  });
+}
+function lidos(alvo){
+  return Array.prototype.slice.call(document.querySelectorAll(alvo+' input:checked'))
+    .map(function(i){ return i.value; }).join(';');
+}
+
+$('#pt-modelo').addEventListener('change', function(){
+  var m = modelosPT[this.value];
+  modeloAtual = m || null;
+  if (!m){ limpar('#msg-modelo'); return; }
+  marcas('#pt-riscos', m.riscos, true);
+  marcas('#pt-epis', m.epis, true);
+  marcas('#pt-medidas', m.medidas, true);
+  aviso('#msg-modelo', m.norma + ' · validade máxima de ' + m.validade +
+        ' dia(s) · exige ' + m.treinamentos.join(' e ') + '.', 'aviso');
+  var hoje = new Date().toISOString().slice(0,10);
+  $('#pt-di').value = hoje; $('#pt-df').value = hoje;
+  desenharEquipe();
+});
+
+$('#pt-add-pessoa').addEventListener('change', function(){
+  var p = pessoasRH[this.value];
+  this.value='';
+  if (!p) return;
+  if (equipePT.some(function(q){ return q.nome===p.nome; })) return;
+  equipePT.push({ matricula:p.matricula, nome:p.nome, funcao:p.funcao,
+                  asoVencido:p.asoVencido, asoValidade:p.asoValidade, assinatura:'' });
+  desenharEquipe();
+});
+
+function desenharEquipe(){
+  var box = $('#pt-equipe'); box.innerHTML='';
+  equipePT.forEach(function(q, idx){
+    var d=document.createElement('div'); d.className='eqp';
+    var info=document.createElement('div'); info.className='info';
+    info.innerHTML='<div class="n">'+q.nome+'</div><div class="f">'+(q.funcao||'')+'</div>' +
+      (q.asoVencido ? '<div class="alerta">ASO vencido em '+q.asoValidade+'</div>' : '');
+    var cv=document.createElement('canvas');
+    var x=document.createElement('button'); x.type='button'; x.className='x'; x.innerHTML='&times;';
+    x.onclick=function(){ equipePT.splice(idx,1); desenharEquipe(); };
+    d.appendChild(info); d.appendChild(cv); d.appendChild(x); box.appendChild(d);
+    ligarAssinatura(cv, function(dados){ q.assinatura = dados; });
+  });
+}
+
+function ligarAssinatura(c, aoMudar){
+  var r = c.getBoundingClientRect();
+  c.width = (r.width||120)*2; c.height = (r.height||52)*2;
+  var ctx = c.getContext('2d'); ctx.scale(2,2);
+  ctx.lineWidth=1.6; ctx.lineCap='round'; ctx.strokeStyle='#1C3752';
+  var d=false, tem=false;
+  function pos(ev){ var b=c.getBoundingClientRect(); var t=ev.touches?ev.touches[0]:ev;
+    return {x:t.clientX-b.left, y:t.clientY-b.top}; }
+  function ini(ev){ ev.preventDefault(); d=true; var p=pos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function mov(ev){ if(!d) return; ev.preventDefault(); var p=pos(ev); ctx.lineTo(p.x,p.y); ctx.stroke(); tem=true; }
+  function fim(){ if(d && tem && aoMudar) aoMudar(c.toDataURL('image/png')); d=false; }
+  ['mousedown','touchstart'].forEach(function(e){ c.addEventListener(e, ini, {passive:false}); });
+  ['mousemove','touchmove'].forEach(function(e){ c.addEventListener(e, mov, {passive:false}); });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(function(e){ c.addEventListener(e, fim); });
+}
+
+var assPT = {};
+['pt-ass-c','pt-ass-a'].forEach(function(id){
+  setTimeout(function(){ ligarAssinatura($('#'+id), function(d){ assPT[id]=d; }); }, 400);
+});
+document.querySelectorAll('[data-limpa]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var c=$('#'+b.dataset.limpa), x=c.getContext('2d');
+    x.clearRect(0,0,c.width,c.height); assPT[b.dataset.limpa]='';
+  });
+});
+
+function emitirPT(forcar){
+  var b=$('#btn-pt'); b.disabled=true; b.textContent='Emitindo...';
+  chamar({ acao:'salvar_pt', codigo:sessao.codigo, token:sessao.token,
+    modelo: modeloAtual.modelo, obra:$('#pt-obra').value,
+    data_inicio:$('#pt-di').value, data_fim:$('#pt-df').value,
+    hora_inicio:$('#pt-hi').value, hora_fim:$('#pt-hf').value,
+    local:$('#pt-local').value, descricao:$('#pt-desc').value,
+    empresa:$('#pt-empresa').value, encarregado:$('#pt-enc').value,
+    area_restrita:$('#pt-area').value, mao_obra:$('#pt-mo').value,
+    riscos:lidos('#pt-riscos'), epis:lidos('#pt-epis'), medidas:lidos('#pt-medidas'),
+    equipe:JSON.stringify(equipePT),
+    assinatura_contratada:assPT['pt-ass-c']||'', assinatura_area:assPT['pt-ass-a']||'',
+    observacoes:$('#pt-obs').value, forcar: forcar ? 'SIM' : '' })
+  .then(function(r){
+    b.disabled=false; b.textContent='Emitir Permissão de Trabalho';
+    if (r.erro === 'PENDENCIAS'){
+      var txt = 'Pendências encontradas:\n\n- ' + r.pendencias.join('\n- ') +
+                '\n\nEmitir mesmo assim? A PT sairá com as pendências impressas e o engenheiro será notificado.';
+      if (confirm(txt)) emitirPT(true);
+      else aviso('#msg-pt','Emissão cancelada. Regularize as pendências.','aviso');
+      return;
+    }
+    if (r.erro){ aviso('#msg-pt', r.erro); return; }
+    baixarPdf(r);
+    aviso('#msg-pt','PT nº '+r.registro+' emitida.' +
+      (r.pendencias && r.pendencias.length ? ' Atenção: saiu com pendências registradas.' : ''),
+      (r.pendencias && r.pendencias.length) ? 'aviso' : 'ok');
+    window.scrollTo(0,0);
+  }).catch(function(){
+    b.disabled=false; b.textContent='Emitir Permissão de Trabalho';
+    aviso('#msg-pt','Falha ao emitir. Tente de novo.');
+  });
+}
+
+$('#btn-pt').addEventListener('click', function(){
+  limpar('#msg-pt');
+  if (!modeloAtual){ aviso('#msg-pt','Escolha o modelo de PT.'); return; }
+  if (!$('#pt-obra').value){ aviso('#msg-pt','Escolha a obra.'); return; }
+  if (!$('#pt-desc').value.trim()){ aviso('#msg-pt','Descreva o trabalho.'); return; }
+  if (!equipePT.length){ aviso('#msg-pt','Inclua ao menos uma pessoa liberada.'); return; }
+  var semAss = equipePT.filter(function(q){ return !q.assinatura; }).map(function(q){ return q.nome; });
+  if (semAss.length){ aviso('#msg-pt','Falta assinatura de: '+semAss.join(', ')); return; }
+  if (!assPT['pt-ass-c']){ aviso('#msg-pt','Falta a assinatura do responsável da contratada.'); return; }
+  emitirPT(false);
+});
+
+
+/* ---------- ORDEM DE SERVICO ---------- */
+var modelosOS = [], modeloOS = null, equipeOS = [];
+
+function carregarOS(){
+  chamar({ acao:'modelos_os', codigo:sessao.codigo, token:sessao.token }).then(function(r){
+    if (r.erro || !r.modelos) return;
+    modelosOS = r.modelos;
+    var s = $('#os-servico');
+    s.innerHTML = '<option value="">Selecione o serviço do dia</option>';
+    modelosOS.forEach(function(m,i){
+      var o=document.createElement('option'); o.value=i; o.textContent=m.servico; s.appendChild(o);
+    });
+  });
+}
+
+$('#os-servico').addEventListener('change', function(){
+  var m = modelosOS[this.value];
+  modeloOS = m || null;
+  if (!m) return;
+  marcas('#os-riscos', m.riscos, true);
+  marcas('#os-medidas', m.medidas, true);
+  marcas('#os-epis', m.epis, true);
+  marcas('#os-proib', m.proibicoes, true);
+});
+
+$('#os-add-pessoa').addEventListener('change', function(){
+  var p = pessoasRH[this.value];
+  this.value='';
+  if (!p) return;
+  if (equipeOS.some(function(q){ return q.nome===p.nome; })) return;
+  equipeOS.push({ matricula:p.matricula, nome:p.nome, funcao:p.funcao, assinatura:'' });
+  desenharEquipeOS();
+});
+
+function desenharEquipeOS(){
+  var box = $('#os-equipe'); box.innerHTML='';
+  equipeOS.forEach(function(q, idx){
+    var d=document.createElement('div'); d.className='eqp';
+    var info=document.createElement('div'); info.className='info';
+    info.innerHTML='<div class="n">'+q.nome+'</div><div class="f">'+(q.funcao||'')+'</div>';
+    var cv=document.createElement('canvas');
+    var x=document.createElement('button'); x.type='button'; x.className='x'; x.innerHTML='&times;';
+    x.onclick=function(){ equipeOS.splice(idx,1); desenharEquipeOS(); };
+    d.appendChild(info); d.appendChild(cv); d.appendChild(x); box.appendChild(d);
+    ligarAssinatura(cv, function(dados){ q.assinatura = dados; });
+  });
+}
+
+$('#btn-os').addEventListener('click', function(){
+  limpar('#msg-os');
+  if (!modeloOS){ aviso('#msg-os','Escolha o serviço.'); return; }
+  if (!$('#os-obra').value){ aviso('#msg-os','Escolha a obra.'); return; }
+  if (!equipeOS.length){ aviso('#msg-os','Inclua ao menos uma pessoa.'); return; }
+  var falta = equipeOS.filter(function(q){ return !q.assinatura; }).map(function(q){ return q.nome; });
+  if (falta.length){ aviso('#msg-os','Falta assinatura de: '+falta.join(', ')); return; }
+
+  var b=this; b.disabled=true; b.textContent='Emitindo...';
+  chamar({ acao:'salvar_os', codigo:sessao.codigo, token:sessao.token,
+    obra:$('#os-obra').value, data:$('#os-data').value, servico:modeloOS.servico,
+    local:$('#os-local').value,
+    riscos:lidos('#os-riscos'), medidas:lidos('#os-medidas'),
+    epis:lidos('#os-epis'), proibicoes:lidos('#os-proib'),
+    equipe:JSON.stringify(equipeOS), observacoes:$('#os-obs').value })
+  .then(function(r){
+    b.disabled=false; b.textContent='Emitir Ordem de Serviço';
+    if (r.erro){ aviso('#msg-os', r.erro); return; }
+    baixarPdf(r);
+    aviso('#msg-os','OS nº '+r.registro+' emitida para '+equipeOS.length+' pessoa(s).','ok');
+    equipeOS = []; desenharEquipeOS();
+    window.scrollTo(0,0);
+  }).catch(function(){
+    b.disabled=false; b.textContent='Emitir Ordem de Serviço';
+    aviso('#msg-os','Falha ao emitir. Tente de novo.');
   });
 });
 
