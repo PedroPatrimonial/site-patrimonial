@@ -844,7 +844,13 @@ function montarListas(){
 
 /* ---------- MENU ---------- */
 document.querySelectorAll('[data-ir]').forEach(function(b){
-  b.addEventListener('click', function(){ tela('tela-' + b.dataset.ir); });
+  b.addEventListener('click', function(){
+    var destino = b.dataset.ir;
+    tela('tela-' + destino);
+    // o cadastro de pessoas vive no drive do ADM e muda no dia a dia:
+    // recarrega ao abrir EPI/PT/OS, no maximo 1x a cada 2 minutos
+    if (['epi','pt','os'].indexOf(destino) >= 0 && Date.now() - rhCarregadoEm > 120000) carregarRH();
+  });
 });
 document.querySelectorAll('[data-voltar]').forEach(function(b){
   b.addEventListener('click', function(){ tela('tela-menu'); });
@@ -1209,32 +1215,53 @@ $('#form-residuo').addEventListener('submit', function(ev){
 
 
 /* ---------- ENTREGA DE EPI ---------- */
-var pessoasRH = [], catalogoEpi = [];
+var pessoasRH = [], catalogoEpi = [], rhCarregadoEm = 0;
+
+/* Monta um select de pessoas agrupado: primeiro quem e da obra do usuario,
+   depois o restante do cadastro. O value continua sendo o indice em pessoasRH. */
+function montarSelectPessoas(seletor, comVinculo){
+  var s = $(seletor); if (!s) return;
+  s.innerHTML = '';
+  if (!pessoasRH.length){
+    s.innerHTML = '<option value="">Nenhuma pessoa ativa no cadastro</option>';
+    return;
+  }
+  s.appendChild(new Option('Selecione', ''));
+  var grupos = [
+    { rot:'Desta obra',            filtro:function(p){ return p.daObra;  } },
+    { rot:'Outras obras / sede',   filtro:function(p){ return !p.daObra; } }
+  ];
+  grupos.forEach(function(g){
+    var itens = [];
+    pessoasRH.forEach(function(p,i){ if (g.filtro(p)) itens.push(i); });
+    if (!itens.length) return;
+    var og = document.createElement('optgroup'); og.label = g.rot;
+    itens.forEach(function(i){
+      var p = pessoasRH[i];
+      var o = document.createElement('option');
+      o.value = i;
+      o.textContent = p.nome + (p.funcao ? ' — ' + p.funcao : '') +
+                      (comVinculo && p.vinculo ? ' (' + p.vinculo + ')' : '');
+      og.appendChild(o);
+    });
+    s.appendChild(og);
+  });
+}
 
 function carregarRH(){
   chamar({ acao:'pessoas', codigo:sessao.codigo, token:sessao.token }).then(function(r){
-    if (r.erro || !r.pessoas) return;
-    pessoasRH = r.pessoas;
-    var s = $('#epi-pessoa');
-    s.innerHTML = '<option value="">Selecione</option>';
-    pessoasRH.forEach(function(p,i){
-      var o = document.createElement('option');
-      o.value = i; o.textContent = p.nome + ' — ' + (p.funcao||'') + (p.vinculo? ' ('+p.vinculo+')':'');
-      s.appendChild(o);
-    });
-    if (!pessoasRH.length) s.innerHTML = '<option value="">Nenhuma pessoa cadastrada na aba PESSOAS</option>';
-    var so = $('#os-add-pessoa');
-    so.innerHTML = '<option value="">Selecione</option>';
-    pessoasRH.forEach(function(p,i){
-      var o=document.createElement('option'); o.value=i;
-      o.textContent = p.nome + ' — ' + (p.funcao||''); so.appendChild(o);
-    });
-    var sp = $('#pt-add-pessoa');
-    sp.innerHTML = '<option value="">Selecione</option>';
-    pessoasRH.forEach(function(p,i){
-      var o=document.createElement('option'); o.value=i;
-      o.textContent = p.nome + ' — ' + (p.funcao||''); sp.appendChild(o);
-    });
+    if (r.erro){
+      pessoasRH = [];
+      ['#epi-pessoa','#os-add-pessoa','#pt-add-pessoa'].forEach(function(sel){
+        var s = $(sel); if (s) s.innerHTML = '<option value="">' + r.erro + '</option>';
+      });
+      return;
+    }
+    pessoasRH = r.pessoas || [];
+    rhCarregadoEm = Date.now();
+    montarSelectPessoas('#epi-pessoa', true);
+    montarSelectPessoas('#os-add-pessoa', false);
+    montarSelectPessoas('#pt-add-pessoa', false);
   });
   chamar({ acao:'catalogo_epi', codigo:sessao.codigo, token:sessao.token }).then(function(r){
     if (r.erro || !r.itens) return;
