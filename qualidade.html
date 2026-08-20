@@ -112,8 +112,35 @@ textarea{min-height:86px;resize:vertical}
 .pt-cab{font-weight:700;font-size:.86rem;color:var(--patri);margin-bottom:9px}
 .ponto .campo:last-child{margin-bottom:0}
 .assbox{border:1.5px dashed var(--linha);border-radius:var(--r);padding:12px;background:#fff;text-align:center}
-.assbox canvas{width:100%;height:150px;border:1px solid var(--linha);border-radius:9px;
- background:#fff;touch-action:none;display:block}
+/* ---------- botao de assinar + tela cheia de assinatura ---------- */
+.btn-ass{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+ border:0;border-radius:var(--r);padding:15px 16px;font-family:inherit;font-size:.95rem;
+ font-weight:700;cursor:pointer;background:var(--turq);color:#0C3A3C;
+ box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.btn-ass:active{transform:translateY(1px)}
+.btn-ass .ic{font-size:1.05rem;line-height:1}
+.btn-ass.feito{background:#EAF7EF;color:var(--ok);border:1.5px solid #BCE3CB;box-shadow:none}
+.btn-ass.feito img{height:34px;max-width:150px;object-fit:contain;background:#fff;
+ border-radius:6px;padding:2px 5px}
+.ass-campo{margin-bottom:11px}
+.ass-campo .rot{font-size:.8rem;font-weight:700;color:var(--patri);margin-bottom:6px}
+.ass-campo .rot .opc{font-weight:400;color:var(--suave);font-size:.78rem}
+
+#tela-assinar{position:fixed;inset:0;z-index:9999;background:var(--neve);
+ display:none;flex-direction:column}
+#tela-assinar.aberta{display:flex}
+#tela-assinar .cab{background:var(--patri);color:#fff;padding:13px 16px;flex:none}
+#tela-assinar .cab .q{font-size:.78rem;opacity:.85}
+#tela-assinar .cab .n{font-weight:700;font-size:1rem;line-height:1.25}
+#tela-assinar .area{flex:1;min-height:0;padding:12px;display:flex;flex-direction:column}
+#tela-assinar canvas{flex:1;min-height:0;width:100%;background:#fff;border:1.5px solid var(--linha);
+ border-radius:var(--r);touch-action:none;display:block}
+#tela-assinar .dica{text-align:center;font-size:.78rem;color:var(--suave);padding:9px 0 3px}
+#tela-assinar .pe{flex:none;padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+ display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#fff;border-top:1px solid var(--linha)}
+#tela-assinar .pe .btn{margin:0}
+#tela-assinar .pe .full{grid-column:1 / -1}
+body.travado{overflow:hidden}
 .asshint{font-size:.77rem;color:var(--suave);margin:7px 0 9px}
 .epi-item{border:1px solid var(--linha);border-radius:var(--r);padding:12px;margin-bottom:10px;background:var(--neve);position:relative}
 .epi-item .x{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
@@ -125,14 +152,16 @@ textarea{min-height:86px;resize:vertical}
    entao o operador nao enxergava o que estava marcado na PT e na OS */
 .marcas input[type=checkbox]{width:19px;height:19px;flex:none;margin:1px 0 0;padding:0;
  appearance:auto;-webkit-appearance:checkbox;accent-color:var(--medio);border-radius:4px;cursor:pointer}
-.eqp{display:flex;align-items:center;gap:10px;border:1px solid var(--linha);border-radius:var(--r);
- padding:11px 12px;margin-bottom:9px;background:#fff}
-.eqp .info{flex:1;min-width:0}
+/* a pessoa da equipe agora ocupa a largura toda: nome em cima, assinatura embaixo */
+.eqp{position:relative;border:1px solid var(--linha);border-radius:var(--r);
+ padding:11px 12px 12px;margin-bottom:9px;background:#fff}
+.eqp .info{min-width:0;margin:0 34px 9px 0}
 .eqp .n{font-weight:700;font-size:.9rem}
 .eqp .f{font-size:.78rem;color:var(--suave)}
 .eqp .alerta{font-size:.75rem;color:var(--erro);font-weight:700}
-.eqp canvas{width:120px;height:52px;border:1px solid var(--linha);border-radius:7px;background:#fff;touch-action:none}
-.eqp .x{width:26px;height:26px;border-radius:50%;border:0;background:#E4E9ED;color:#5B7183;cursor:pointer;flex:none}
+.eqp .x{position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:50%;
+ border:0;background:#E4E9ED;color:#5B7183;cursor:pointer;flex:none;padding:0;line-height:1}
+.eqp .rot{font-size:.75rem;color:var(--suave);margin-bottom:5px}
 footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
 </style>
 </head>
@@ -653,10 +682,8 @@ footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
     <button type="button" class="btn sec" id="epi-add">Adicionar equipamento</button>
 
     <h2>Assinatura do funcionário</h2>
-    <div class="assbox">
-      <canvas id="epi-ass" width="620" height="200"></canvas>
-      <div class="asshint">Assine com o dedo dentro do quadro</div>
-      <button type="button" class="btn sec" id="epi-limpar">Limpar assinatura</button>
+    <div class="ass-campo">
+      <button type="button" class="btn-ass" id="epi-ass"><span class="ic">&#9998;</span><span class="tx">Assinar</span></button>
     </div>
 
     <div class="campo" style="margin-top:15px"><label>Observações <span class="opc">(opcional)</span></label><textarea id="epi-obs"></textarea></div>
@@ -706,15 +733,13 @@ footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
     <div id="pt-equipe"></div>
 
     <h2>Responsáveis</h2>
-    <div class="assbox">
-      <div class="asshint" style="margin-top:0">Responsável da Contratada</div>
-      <canvas id="pt-ass-c" width="620" height="200"></canvas>
-      <button type="button" class="btn sec" data-limpa="pt-ass-c">Limpar</button>
+    <div class="ass-campo">
+      <div class="rot">Responsável da Contratada</div>
+      <button type="button" class="btn-ass" id="pt-ass-c"><span class="ic">&#9998;</span><span class="tx">Assinar</span></button>
     </div>
-    <div class="assbox" style="margin-top:11px">
-      <div class="asshint" style="margin-top:0">Responsável da Área <span style="color:#8A96A3">(opcional)</span></div>
-      <canvas id="pt-ass-a" width="620" height="200"></canvas>
-      <button type="button" class="btn sec" data-limpa="pt-ass-a">Limpar</button>
+    <div class="ass-campo">
+      <div class="rot">Responsável da Área <span class="opc">(opcional)</span></div>
+      <button type="button" class="btn-ass" id="pt-ass-a"><span class="ic">&#9998;</span><span class="tx">Assinar</span></button>
     </div>
 
     <div class="campo" style="margin-top:15px"><label>Observações <span class="opc">(opcional)</span></label><textarea id="pt-obs"></textarea></div>
@@ -757,6 +782,23 @@ footer{color:#6B6A67;font-size:.75rem;padding:16px 0 30px;text-align:center}
 </div></main>
 
 <footer>Patrimonial Serviços Especializados LTDA</footer>
+
+<!-- tela cheia de assinatura -->
+<div id="tela-assinar" aria-hidden="true">
+  <div class="cab">
+    <div class="q" id="ass-contexto">Assinatura</div>
+    <div class="n" id="ass-nome">&nbsp;</div>
+  </div>
+  <div class="area">
+    <canvas id="ass-canvas"></canvas>
+    <div class="dica">Assine com o dedo. Vire o celular na horizontal se precisar de mais espaço.</div>
+  </div>
+  <div class="pe">
+    <button type="button" class="btn sec" id="ass-limpar">Limpar</button>
+    <button type="button" class="btn" id="ass-concluir">Concluir</button>
+    <button type="button" class="btn sec full" id="ass-cancelar">Cancelar</button>
+  </div>
+</div>
 
 <script>
 
@@ -1321,31 +1363,14 @@ function novoItemEpi(){
 }
 $('#epi-add').addEventListener('click', novoItemEpi);
 
-/* assinatura no dedo */
-(function(){
-  var c = $('#epi-ass'), ctx = c.getContext('2d'), desenhando = false, temTraco = false;
-  function ajustar(){
-    var r = c.getBoundingClientRect();
-    c.width = r.width * 2; c.height = r.height * 2;
-    ctx.scale(2,2); ctx.lineWidth = 2; ctx.lineCap = 'round';
-    ctx.strokeStyle = '#1C3752';
-  }
-  setTimeout(ajustar, 300);
-  window.addEventListener('resize', function(){ if (!temTraco) ajustar(); });
-  function pos(ev){
-    var r = c.getBoundingClientRect();
-    var t = ev.touches ? ev.touches[0] : ev;
-    return { x: t.clientX - r.left, y: t.clientY - r.top };
-  }
-  function inicio(ev){ ev.preventDefault(); desenhando = true; var p = pos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
-  function move(ev){ if(!desenhando) return; ev.preventDefault(); var p = pos(ev); ctx.lineTo(p.x,p.y); ctx.stroke(); temTraco = true; }
-  function fim(){ desenhando = false; }
-  ['mousedown','touchstart'].forEach(function(e){ c.addEventListener(e, inicio, {passive:false}); });
-  ['mousemove','touchmove'].forEach(function(e){ c.addEventListener(e, move, {passive:false}); });
-  ['mouseup','mouseleave','touchend','touchcancel'].forEach(function(e){ c.addEventListener(e, fim); });
-  $('#epi-limpar').addEventListener('click', function(){ ctx.clearRect(0,0,c.width,c.height); temTraco = false; });
-  window.assinaturaEpi = function(){ return temTraco ? c.toDataURL('image/png') : ''; };
-})();
+/* assinatura do funcionario - tela cheia */
+var assEpi = '';
+botaoAssinatura($('#epi-ass'), 'Entrega de EPI',
+  'Assinatura do funcionário',
+  function(d){ assEpi = d; },
+  function(){ return assEpi; });
+window.assinaturaEpi = function(){ return assEpi; };
+window.limparAssinaturaEpi = function(){ assEpi = ''; marcarBotaoAssinado($('#epi-ass'), ''); };
 
 $('#btn-epi').addEventListener('click', function(){
   limpar('#msg-epi');
@@ -1377,7 +1402,7 @@ $('#btn-epi').addEventListener('click', function(){
     if (r.erro){ aviso('#msg-epi', r.erro); return; }
     aviso('#msg-epi','Entrega '+r.entrega+' registrada com '+r.itens+' equipamento(s). Emita a ficha abaixo.','ok');
     $('#epi-itens').innerHTML=''; novoItemEpi();
-    $('#epi-limpar').click();
+    window.limparAssinaturaEpi();
     window.scrollTo(0,0);
   }).catch(function(){
     b.disabled=false; b.textContent='Registrar entrega';
@@ -1465,38 +1490,219 @@ function desenharEquipe(){
     var info=document.createElement('div'); info.className='info';
     info.innerHTML='<div class="n">'+q.nome+'</div><div class="f">'+(q.funcao||'')+'</div>' +
       (q.asoVencido ? '<div class="alerta">ASO vencido em '+q.asoValidade+'</div>' : '');
-    var cv=document.createElement('canvas');
+    var bt=document.createElement('button'); bt.type='button'; bt.className='btn-ass';
     var x=document.createElement('button'); x.type='button'; x.className='x'; x.innerHTML='&times;';
     x.onclick=function(){ equipePT.splice(idx,1); desenharEquipe(); };
-    d.appendChild(info); d.appendChild(cv); d.appendChild(x); box.appendChild(d);
-    ligarAssinatura(cv, function(dados){ q.assinatura = dados; });
+    d.appendChild(x); d.appendChild(info); d.appendChild(bt); box.appendChild(d);
+    botaoAssinatura(bt, 'Permissão de Trabalho' + (modeloAtual ? ' · ' + modeloAtual.modelo : ''), q.nome,
+      function(dados){ q.assinatura = dados; }, function(){ return q.assinatura; });
   });
 }
 
+/**
+ * Captura de assinatura.
+ *
+ * O traco saia longe do dedo porque o tamanho do bitmap do canvas era definido
+ * uma unica vez, no momento em que a funcao era chamada. Nessa hora a tela ainda
+ * estava escondida (display:none), entao a medida vinha zero e caia no tamanho
+ * reserva de 120x52, enquanto na tela o campo tem a largura toda. Tudo que o dedo
+ * desenhava fora daqueles 120px caia fora do bitmap.
+ *
+ * Agora o bitmap e remedido sempre que o campo ganha tamanho (ao abrir a tela,
+ * ao girar o celular, ao redimensionar) e os tracos sao guardados em pontos e
+ * redesenhados, para a assinatura nao se perder no meio do caminho.
+ */
 function ligarAssinatura(c, aoMudar){
-  var r = c.getBoundingClientRect();
-  c.width = (r.width||120)*2; c.height = (r.height||52)*2;
-  var ctx = c.getContext('2d'); ctx.scale(2,2);
-  ctx.lineWidth=1.6; ctx.lineCap='round'; ctx.strokeStyle='#1C3752';
-  var d=false, tem=false;
-  function pos(ev){ var b=c.getBoundingClientRect(); var t=ev.touches?ev.touches[0]:ev;
-    return {x:t.clientX-b.left, y:t.clientY-b.top}; }
-  function ini(ev){ ev.preventDefault(); d=true; var p=pos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
-  function mov(ev){ if(!d) return; ev.preventDefault(); var p=pos(ev); ctx.lineTo(p.x,p.y); ctx.stroke(); tem=true; }
-  function fim(){ if(d && tem && aoMudar) aoMudar(c.toDataURL('image/png')); d=false; }
+  var ctx = c.getContext('2d');
+  var tracos = [], atual = null, larg = 0, alt = 0;
+
+  function estilo(){
+    var dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // setTransform, nao scale: nao acumula
+    ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#1C3752';
+  }
+  function redesenhar(){
+    ctx.clearRect(0, 0, larg, alt);
+    for (var i = 0; i < tracos.length; i++){
+      var t = tracos[i];
+      if (!t.length) continue;
+      ctx.beginPath();
+      ctx.moveTo(t[0].x, t[0].y);
+      if (t.length === 1) ctx.lineTo(t[0].x + 0.1, t[0].y);
+      else for (var j = 1; j < t.length; j++) ctx.lineTo(t[j].x, t[j].y);
+      ctx.stroke();
+    }
+  }
+  function ajustar(){
+    var r = c.getBoundingClientRect();
+    if (!r.width || !r.height) return;                 // tela ainda escondida
+    if (Math.abs(r.width - larg) < 1 && Math.abs(r.height - alt) < 1) return;
+    larg = r.width; alt = r.height;
+    var dpr = window.devicePixelRatio || 1;
+    c.width  = Math.round(larg * dpr);
+    c.height = Math.round(alt  * dpr);
+    estilo();
+    redesenhar();
+  }
+  ajustar();
+  if (window.ResizeObserver) { try { new ResizeObserver(ajustar).observe(c); } catch(e){} }
+  window.addEventListener('resize', ajustar);
+  window.addEventListener('orientationchange', function(){ setTimeout(ajustar, 300); });
+
+  function ponto(ev){
+    var r = c.getBoundingClientRect();
+    var t = (ev.touches && ev.touches[0]) ? ev.touches[0] : ev;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  function ini(ev){
+    ev.preventDefault();
+    ajustar();                                          // garante medida correta antes do 1o traco
+    atual = [ponto(ev)]; tracos.push(atual);
+    redesenhar();
+  }
+  function mov(ev){
+    if (!atual) return;
+    ev.preventDefault();
+    var p = ponto(ev), ant = atual[atual.length - 1];
+    atual.push(p);
+    ctx.beginPath(); ctx.moveTo(ant.x, ant.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+  }
+  function fim(){
+    if (!atual) return;
+    atual = null;
+    if (aoMudar) aoMudar(tracos.length ? c.toDataURL('image/png') : '');
+  }
   ['mousedown','touchstart'].forEach(function(e){ c.addEventListener(e, ini, {passive:false}); });
   ['mousemove','touchmove'].forEach(function(e){ c.addEventListener(e, mov, {passive:false}); });
   ['mouseup','mouseleave','touchend','touchcancel'].forEach(function(e){ c.addEventListener(e, fim); });
+
+  c.__limpar = function(){ tracos = []; ctx.clearRect(0, 0, larg, alt); if (aoMudar) aoMudar(''); };
+  c.__vazio  = function(){ return !tracos.length; };
+  c.__ajustar = ajustar;
+  /**
+   * Devolve a assinatura ja recortada e reduzida.
+   * A tela cheia gera uma imagem enorme (2352x851 = ~134 KB por pessoa); numa PT
+   * com 10 assinaturas o envio passaria de 1 MB. Aqui a imagem e cortada na
+   * marca do traco e reduzida, o que tambem melhora o PDF: a rubrica preenche a
+   * linha em vez de flutuar dentro de um retangulo transparente.
+   */
+  c.__imagem = function(){
+    if (!tracos.length) return '';
+    var x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
+    tracos.forEach(function(t){
+      t.forEach(function(p){
+        if (p.x < x1) x1 = p.x; if (p.x > x2) x2 = p.x;
+        if (p.y < y1) y1 = p.y; if (p.y > y2) y2 = p.y;
+      });
+    });
+    var folga = 8;
+    x1 = Math.max(0, x1 - folga); y1 = Math.max(0, y1 - folga);
+    x2 = Math.min(larg, x2 + folga); y2 = Math.min(alt, y2 + folga);
+    var lw = Math.max(1, x2 - x1), lh = Math.max(1, y2 - y1);
+
+    var ALVO_ALT = 120, MAX_LARG = 480;
+    var k = Math.min(ALVO_ALT / lh, MAX_LARG / lw, 4);
+    var fc = document.createElement('canvas');
+    fc.width = Math.max(1, Math.round(lw * k));
+    fc.height = Math.max(1, Math.round(lh * k));
+    var fx = fc.getContext('2d');
+    fx.lineWidth = Math.max(1.4, 2.4 * k); fx.lineCap = 'round'; fx.lineJoin = 'round';
+    fx.strokeStyle = '#1C3752';
+    tracos.forEach(function(t){
+      if (!t.length) return;
+      fx.beginPath();
+      fx.moveTo((t[0].x - x1) * k, (t[0].y - y1) * k);
+      if (t.length === 1) fx.lineTo((t[0].x - x1) * k + 0.1, (t[0].y - y1) * k);
+      else for (var j = 1; j < t.length; j++) fx.lineTo((t[j].x - x1) * k, (t[j].y - y1) * k);
+      fx.stroke();
+    });
+    return fc.toDataURL('image/png');
+  };
+  return c;
+}
+
+/* ---------------- TELA CHEIA DE ASSINATURA ----------------
+   O campo embutido era pequeno demais para assinar com o dedo. Agora o campo
+   virou um botao: ao tocar, abre uma tela cheia so para assinar, e a assinatura
+   so e gravada quando a pessoa confirma em "Concluir".                        */
+var assTelaCanvas = null, assTelaAlvo = null;
+
+function abrirAssinatura(opcoes){
+  var tela = $('#tela-assinar');
+  assTelaAlvo = opcoes || {};
+  $('#ass-contexto').textContent = assTelaAlvo.contexto || 'Assinatura';
+  $('#ass-nome').textContent = assTelaAlvo.nome || ' ';
+
+  document.body.classList.add('travado');
+  tela.classList.add('aberta');
+  tela.setAttribute('aria-hidden', 'false');
+
+  if (!assTelaCanvas) assTelaCanvas = ligarAssinatura($('#ass-canvas'), null);
+  assTelaCanvas.__limpar();
+  // a tela acabou de aparecer: so agora o canvas tem tamanho de verdade
+  requestAnimationFrame(function(){ assTelaCanvas.__ajustar(); });
+}
+
+function fecharAssinatura(){
+  var tela = $('#tela-assinar');
+  tela.classList.remove('aberta');
+  tela.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('travado');
+  assTelaAlvo = null;
+}
+
+$('#ass-limpar').addEventListener('click', function(){ if (assTelaCanvas) assTelaCanvas.__limpar(); });
+$('#ass-cancelar').addEventListener('click', fecharAssinatura);
+$('#ass-concluir').addEventListener('click', function(){
+  if (!assTelaCanvas || assTelaCanvas.__vazio()){
+    $('#ass-nome').textContent = 'Assine antes de concluir';
+    return;
+  }
+  var dados = assTelaCanvas.__imagem();
+  if (assTelaAlvo && assTelaAlvo.aoConcluir) assTelaAlvo.aoConcluir(dados);
+  fecharAssinatura();
+});
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape' && $('#tela-assinar').classList.contains('aberta')) fecharAssinatura();
+});
+
+/** Deixa o botao com cara de assinado, mostrando a rubrica em miniatura. */
+function marcarBotaoAssinado(botao, dados){
+  if (dados){
+    botao.classList.add('feito');
+    botao.innerHTML = '<img alt="assinatura"><span class="tx">Assinado &#10003; &middot; tocar para refazer</span>';
+    botao.querySelector('img').src = dados;
+  } else {
+    botao.classList.remove('feito');
+    botao.innerHTML = '<span class="ic">&#9998;</span><span class="tx">Assinar</span>';
+  }
+}
+
+/**
+ * Liga um botao a tela cheia de assinatura.
+ * guardar(dados) recebe a imagem; ler() devolve o que ja estiver guardado.
+ */
+function botaoAssinatura(botao, contexto, nome, guardar, ler){
+  marcarBotaoAssinado(botao, ler ? ler() : '');
+  botao.addEventListener('click', function(){
+    abrirAssinatura({
+      contexto: contexto,
+      nome: nome,
+      aoConcluir: function(dados){ guardar(dados); marcarBotaoAssinado(botao, dados); }
+    });
+  });
 }
 
 var assPT = {};
-['pt-ass-c','pt-ass-a'].forEach(function(id){
-  setTimeout(function(){ ligarAssinatura($('#'+id), function(d){ assPT[id]=d; }); }, 400);
-});
+botaoAssinatura($('#pt-ass-c'), 'Permissão de Trabalho', 'Responsável da Contratada',
+  function(d){ assPT['pt-ass-c']=d; }, function(){ return assPT['pt-ass-c']; });
+botaoAssinatura($('#pt-ass-a'), 'Permissão de Trabalho', 'Responsável da Área',
+  function(d){ assPT['pt-ass-a']=d; }, function(){ return assPT['pt-ass-a']; });
 document.querySelectorAll('[data-limpa]').forEach(function(b){
   b.addEventListener('click', function(){
-    var c=$('#'+b.dataset.limpa), x=c.getContext('2d');
-    x.clearRect(0,0,c.width,c.height); assPT[b.dataset.limpa]='';
+    assPT[b.dataset.limpa]='';
+    marcarBotaoAssinado($('#'+b.dataset.limpa), '');
   });
 });
 
@@ -1587,11 +1793,12 @@ function desenharEquipeOS(){
     var d=document.createElement('div'); d.className='eqp';
     var info=document.createElement('div'); info.className='info';
     info.innerHTML='<div class="n">'+q.nome+'</div><div class="f">'+(q.funcao||'')+'</div>';
-    var cv=document.createElement('canvas');
+    var bt=document.createElement('button'); bt.type='button'; bt.className='btn-ass';
     var x=document.createElement('button'); x.type='button'; x.className='x'; x.innerHTML='&times;';
     x.onclick=function(){ equipeOS.splice(idx,1); desenharEquipeOS(); };
-    d.appendChild(info); d.appendChild(cv); d.appendChild(x); box.appendChild(d);
-    ligarAssinatura(cv, function(dados){ q.assinatura = dados; });
+    d.appendChild(x); d.appendChild(info); d.appendChild(bt); box.appendChild(d);
+    botaoAssinatura(bt, 'Ordem de Serviço' + (modeloOS ? ' · ' + modeloOS.servico : ''), q.nome,
+      function(dados){ q.assinatura = dados; }, function(){ return q.assinatura; });
   });
 }
 
